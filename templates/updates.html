@@ -35,21 +35,13 @@
         </p>
     </div>
 
-    <!-- Vaccine Reminders -->
-<div style="background-color: #f5f5f5; padding: 20px; border-radius: 8px;">
-    <h3 style="color:#93c572;">Upcoming Vaccine Reminders</h3>
-    {% if reminders %}
-        <ul style="padding-left: 20px; line-height: 1.6;">
-            {% for reminder in reminders %}
-                <li>💉 {{ reminder }}</li>
-            {% endfor %}
-        </ul>
-    {% else %}
+    <!-- Future Reminder Feature -->
+    <div style="background-color: #f5f5f5; padding: 20px; border-radius: 8px;">
+        <h3 style="color:#93c572;">Reminders (Coming Soon)</h3>
         <p style="font-style: italic;">
-            No upcoming vaccine reminders at the moment.
+            Our reminder system for upcoming vaccine doses will be available soon.
+            Check back later for this feature!
         </p>
-    {% endif %}
-</div>
-
+    </div>
 </div>
 {% endblock %}

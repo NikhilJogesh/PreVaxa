@@ -1,0 +1,3 @@
+Flask==2.0.1
+flask-googlemaps==0.2.3
+requests==2.25.1
