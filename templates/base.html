@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}PreVaxa{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <style>
+        * {
+            font-family: 'Montserrat', sans-serif;
+        }
+    </style>
+</head>
+<body style="background-color: #ffffff;">
+    <div class="navbar" style="background-color: #93c572; padding: 15px; text-align: right;">
+        <a href="/" style="margin: 0 15px; color: white; text-decoration: none;">Home</a>
+        <a href="/updates" style="margin: 0 15px; color: white; text-decoration: none;">Updates</a>
+        <a href="/charts" style="margin: 0 15px; color: white; text-decoration: none;">Charts</a>
+    </div>
+
+    <div class="content" style="padding-bottom: 60px;">
+        {% block content %}{% endblock %}
+    </div>
+
+    <footer style="background-color: #93c572; color: white; padding: 20px; text-align: center; position: fixed; bottom: 0; width: 100%;">
+        Created by Mommos and Microservices with Love
+    </footer>
+</body>
+</html>
