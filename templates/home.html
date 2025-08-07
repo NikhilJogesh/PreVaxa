@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - PreVaxa{% endblock %}
+
+{% block content %}
+<h1 style="color:#93c572; text-align:center;">Vaccination Coverage Map</h1>
+
+<!-- Map Container -->
+<div id="map" style="height: 500px; width: 100%; border: 2px solid #93c572; border-radius: 8px; margin: 20px auto;"></div>
+
+<!-- Leaflet CSS & JS for map -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+// Initialize the map after page load
+document.addEventListener('DOMContentLoaded', () => {
+    const map = L.map('map').setView([22.9734, 78.6569], 5); // Center on India
+
+    // Add OpenStreetMap tiles
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Major Indian cities
+    const cities = [
+        { name: "Delhi", lat: 28.6139, lon: 77.2090 },
+        { name: "Mumbai", lat: 19.0760, lon: 72.8777 },
+        { name: "Chennai", lat: 13.0827, lon: 80.2707 },
+        { name: "Kolkata", lat: 22.5726, lon: 88.3639 },
+        { name: "Bangalore", lat: 12.9716, lon: 77.5946 },
+        { name: "Hyderabad", lat: 17.3850, lon: 78.4867 },
+        { name: "Ahmedabad", lat: 23.0225, lon: 72.5714 },
+        { name: "Pune", lat: 18.5204, lon: 73.8567 }
+    ];
+
+    // Add markers for each city
+    cities.forEach(city => {
+        L.marker([city.lat, city.lon])
+            .addTo(map)
+            .bindPopup(`<b>${city.name}</b><br>Vaccination center active`);
+    });
+});
+</script>
+
+<!-- Key stats section -->
+<div style="display: flex; justify-content: center; margin-top: 30px;">
+    <div style="background-color: #f5f5f5; padding: 20px; border-radius: 8px; max-width: 800px; width: 100%;">
+        <h3 style="color:#93c572;">Key Statistics</h3>
+        <div style="display: flex; justify-content: space-around; flex-wrap: wrap;">
+            <div style="text-align: center; margin: 10px; min-width: 150px;">
+                <div style="font-size: 24px; font-weight: bold; color: #93c572;">85%</div>
+                <div>Fully Vaccinated</div>
+            </div>
+            <div style="text-align: center; margin: 10px; min-width: 150px;">
+                <div style="font-size: 24px; font-weight: bold; color: #93c572;">92%</div>
+                <div>At Least One Dose</div>
+            </div>
+            <div style="text-align: center; margin: 10px; min-width: 150px;">
+                <div style="font-size: 24px; font-weight: bold; color: #93c572;">7.3M</div>
+                <div>Daily Doses</div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
