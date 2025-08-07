@@ -7,31 +7,25 @@ from datetime import datetime, timedelta
 
 def fetch_random_vaccine_reminders():
     vaccines = [
-        "Influenza",
-        "Pneumococcal",
-        "Hepatitis B",
-        "Tetanus Booster",
-        "MMR",
-        "Shingles",
-        "HPV",
-        "COVID-19 Booster"
+        "Influenza", "Pneumococcal", "Hepatitis B",
+        "Tetanus Booster", "MMR", "Shingles",
+        "HPV", "COVID-19 Booster"
     ]
-    
     reminders = []
     for _ in range(3):
         vaccine = random.choice(vaccines)
         age_group = random.choice([
-            "0-5 years", "6-12 years", "13-18 years", "19-29 years",
-            "30-45 years", "46-59 years", "60+ years"
+            "0-5 years", "6-12 years", "13-18 years",
+            "19-29 years", "30-45 years", "46-59 years", "60+ years"
         ])
         days_ahead = random.randint(5, 60)
         due_date = datetime.now() + timedelta(days=days_ahead)
         due_date_str = due_date.strftime("%d %b %Y")
-        
         reminders.append(
             f"People aged {age_group} should take the {vaccine} vaccine before {due_date_str}."
         )
     return reminders
+
 
 
 
@@ -60,7 +54,7 @@ def home():
 def updates():
     try:
         updates_data = fetch_updates_data()
-        random_reminders = fetch_random_vaccine_reminders()  # generate reminders
+        random_reminders = fetch_random_vaccine_reminders()  # must call each request
         return render_template(
             'updates.html',
             updates_data=updates_data,
@@ -74,6 +68,7 @@ def updates():
             api_error=str(e),
             reminders=[]
         )
+
 
 
 @app.route('/charts')

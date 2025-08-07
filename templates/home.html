@@ -19,7 +19,6 @@
 <!-- Leaflet CSS & JS for map -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
 <script>
 // Initialize the map after page load
 document.addEventListener('DOMContentLoaded', () => {
@@ -31,8 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }).addTo(map);
 
     // Major Indian cities and vaccination centers
-    // Major Indian cities
-    const cities = [
+   const cities = [
         { name: "Delhi", lat: 28.6139, lon: 77.2090 },
         { name: "Mumbai", lat: 19.0760, lon: 72.8777 },
         { name: "Chennai", lat: 13.0827, lon: 80.2707 },
@@ -50,7 +48,6 @@ document.addEventListener('DOMContentLoaded', () => {
         { name: "Thane", lat: 19.2183, lon: 72.9781 },
         { name: "Bhopal", lat: 23.2599, lon: 77.4126 },
         { name: "Visakhapatnam", lat: 17.6868, lon: 83.2185 },
-        { name: "Pimpri-Chinchwad", lat: 18.6298, lon: 73.7997 },
         { name: "Patna", lat: 25.5941, lon: 85.1376 },
         { name: "Vadodara", lat: 22.3072, lon: 73.1812 },
         { name: "Ghaziabad", lat: 28.6692, lon: 77.4538 },
@@ -60,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { name: "Faridabad", lat: 28.4089, lon: 77.3178 },
         { name: "Meerut", lat: 28.9845, lon: 77.7064 },
         { name: "Rajkot", lat: 22.3039, lon: 70.8022 },
-        { name: "Kalyan-Dombivali", lat: 19.2403, lon: 73.1305 },
+        { name: "Kalyan-Dombivli", lat: 19.2403, lon: 73.1305 },
         { name: "Vasai-Virar", lat: 19.4912, lon: 72.8054 },
         { name: "Varanasi", lat: 25.3176, lon: 82.9739 },
         { name: "Srinagar", lat: 34.0837, lon: 74.7973 },
@@ -82,17 +79,43 @@ document.addEventListener('DOMContentLoaded', () => {
         { name: "Chandigarh", lat: 30.7333, lon: 76.7794 },
         { name: "Guwahati", lat: 26.1445, lon: 91.7362 },
         { name: "Solapur", lat: 17.6599, lon: 75.9064 },
-        { name: "Hubli-Dharwad", lat: 15.3647, lon: 75.1240 }
+        { name: "Hubli-Dharwad", lat: 15.3647, lon: 75.1240 },
+        { name: "Tiruchirappalli", lat: 10.7905, lon: 78.7047 },
+        { name: "Bareilly", lat: 28.3670, lon: 79.4304 },
+        { name: "Moradabad", lat: 28.8386, lon: 78.7733 },
+        { name: "Mysuru", lat: 12.2958, lon: 76.6394 },
+        { name: "Tiruppur", lat: 11.1085, lon: 77.3411 },
+        { name: "Gaya", lat: 24.7955, lon: 85.0060 },
+        { name: "Jalgaon", lat: 21.0077, lon: 75.5626 },
+        { name: "Udaipur", lat: 24.5854, lon: 73.7125 },
+        { name: "Bellary", lat: 15.1394, lon: 76.9214 },
+        { name: "Bhavnagar", lat: 21.7645, lon: 72.1519 },
+        { name: "Warangal", lat: 17.9784, lon: 79.5941 },
+        { name: "Shillong", lat: 25.5788, lon: 91.8933 },
+        { name: "Imphal", lat: 24.8170, lon: 93.9368 },
+        { name: "Aizawl", lat: 23.7271, lon: 92.7176 },
+        { name: "Gangtok", lat: 27.3389, lon: 88.6065 },
+        { name: "Itanagar", lat: 27.0844, lon: 93.6053 },
+        { name: "Port Blair", lat: 11.6234, lon: 92.7265 },
+        { name: "Panaji", lat: 15.4909, lon: 73.8278 }
     ];
 
-    // Add markers for each city
+    // Add markers with random vaccination percentage
     cities.forEach(city => {
+        const vaccinatedPercent = Math.floor(Math.random() * 21) + 80; 
+        // Random between 80% and 100%
+        
         L.marker([city.lat, city.lon])
             .addTo(map)
-            .bindPopup(`<b>${city.name}</b><br>Vaccination center active`);
+            .bindPopup(`
+                <b>${city.name}</b><br>
+                Vaccination center active<br>
+                ${vaccinatedPercent}% vaccinated
+            `);
     });
 });
 </script>
+
 
 <!-- Key stats section -->
 <div style="display: flex; justify-content: center; margin-top: 30px;">
