@@ -2,9 +2,6 @@ from flask import Flask, render_template,request
 
 app = Flask(__name__)
 
-
-
-
 # Fetch vaccination data from a government API
 def fetch_updates_data():
     url = "https://api.covid19india.org/data.json"  # Example API
