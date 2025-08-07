@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Charts - PreVaxa{% endblock %}
+
+{% block content %}
+<h1 style="color:#93c572; text-align:center;">Vaccination Data Visualization</h1>
+
+<!-- Section: Pie Charts -->
+<h2 style="text-align: center; color: #93c572; margin-top: 40px;">Pie Charts</h2>
+<div style="display: flex; flex-wrap: wrap; justify-content: space-around; margin-top: 20px;">
+    <div style="width: 30%; margin-bottom: 30px;">
+        <h4 style="text-align: center;">Adults</h4>
+        <img src="{{ url_for('static', filename='images/vaccine_pie_1.png') }}" alt="Pie chart adults" style="width: 100%; border-radius: 8px; border: 1px solid #ccc;">
+    </div>
+    <div style="width: 30%; margin-bottom: 30px;">
+        <h4 style="text-align: center;">Children</h4>
+        <img src="{{ url_for('static', filename='images/vaccine_pie_2.png') }}" alt="Pie chart children" style="width: 100%; border-radius: 8px; border: 1px solid #ccc;">
+    </div>
+    <div style="width: 30%; margin-bottom: 30px;">
+        <h4 style="text-align: center;">Infants</h4>
+        <img src="{{ url_for('static', filename='images/vaccine_pie_3.png') }}" alt="Pie chart infants" style="width: 100%; border-radius: 8px; border: 1px solid #ccc;">
+    </div>
+</div>
+
+<!-- Section: Bar Charts -->
+<h2 style="text-align: center; color: #93c572; margin-top: 60px;">Bar Charts</h2>
+<div style="display: flex; flex-wrap: wrap; justify-content: space-around; margin-top: 20px;">
+    <div style="width: 30%; margin-bottom: 30px;">
+        <h4 style="text-align: center;">Adults</h4>
+        <img src="{{ url_for('static', filename='images/vaccine_bar_1.png') }}" alt="Bar chart adults" style="width: 100%; border-radius: 8px; border: 1px solid #ccc;">
+    </div>
+    <div style="width: 30%; margin-bottom: 30px;">
+        <h4 style="text-align: center;">Children</h4>
+        <img src="{{ url_for('static', filename='images/vaccine_bar_2.png') }}" alt="Bar chart children" style="width: 100%; border-radius: 8px; border: 1px solid #ccc;">
+    </div>
+    <div style="width: 30%; margin-bottom: 30px;">
+        <h4 style="text-align: center;">Infants</h4>
+        <img src="{{ url_for('static', filename='images/vaccine_bar_3.png') }}" alt="Bar chart infants" style="width: 100%; border-radius: 8px; border: 1px solid #ccc;">
+    </div>
+</div>
+
+<div style="text-align: center; margin-top: 40px;">
+    <p style="font-style: italic; color: gray;">More insights and trends coming soon...</p>
+</div>
+{% endblock %}
