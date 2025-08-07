@@ -1,6 +1,61 @@
 from flask import Flask, render_template,request
 
+import random
+from datetime import datetime, timedelta
+
 app = Flask(__name__)
+
+
+def fetch_random_vaccine_reminders():
+    vaccines = [
+        "Influenza",
+        "Pneumococcal",
+        "Hepatitis B",
+        "Tetanus Booster",
+        "MMR",
+        "Shingles",
+        "HPV",
+        "COVID-19 Booster"
+    ]
+    
+    reminders = []
+    for _ in range(3):  # Generate 3 reminders
+        vaccine = random.choice(vaccines)
+        age_group = random.choice([
+            "0-5 years", "6-12 years", "13-18 years", "19-29 years",
+            "30-45 years", "46-59 years", "60+ years"
+        ])
+        days_ahead = random.randint(5, 60)  # Between 5 and 60 days from today
+        due_date = datetime.now() + timedelta(days=days_ahead)
+        due_date_str = due_date.strftime("%d %b %Y")
+        
+        reminders.append(
+            f"People aged {age_group} should take the {vaccine} vaccine before {due_date_str}."
+        )
+    return reminders
+
+
+@app.route('/updates')
+def updates():
+    try:
+        updates_data = fetch_updates_data()
+        random_reminders = fetch_random_vaccine_reminders()  # generate reminders
+        return render_template(
+            'updates.html',
+            updates_data=updates_data,
+            api_error=None,
+            reminders=random_reminders
+        )
+    except Exception as e:
+        return render_template(
+            'updates.html',
+            updates_data=None,
+            api_error=str(e),
+            reminders=[]
+        )
+
+
+
 
 # Fetch vaccination data from a government API
 def fetch_updates_data():
@@ -21,13 +76,7 @@ def home():
     vaccination_data = fetch_updates_data()
     return render_template('home.html', data=vaccination_data)
 
-@app.route('/updates')
-def updates():
-    try:
-        updates_data = fetch_updates_data()
-        return render_template('updates.html', updates_data=updates_data, api_error=None)
-    except Exception as e:
-        return render_template('updates.html', updates_data=None, api_error=str(e))
+
 
 @app.route('/charts')
 def charts():
