@@ -1,7 +1,7 @@
-// Custom JavaScript for PreVaxa
+// Custom JavaScript for Prevexa
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("PreVaxa scripts loaded!");
+    console.log("Prevexa scripts loaded!");
 
     // Example placeholder for future dynamic behavior:
     // const statsBox = document.querySelector('.stats-box');

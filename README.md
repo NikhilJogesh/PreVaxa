@@ -1,8 +1,8 @@
-# 🧬 PreVaxa - Professional Vaccination Management System
+# 🧬 Prevexa - Professional Vaccination Management System
 
 <div align="center">
 
-![PreVaxa Logo](static/images/download.png)
+![Prevexa Logo](static/images/download.png)
 
 **🏆 Advanced Healthcare Technology Solution**
 
@@ -22,7 +22,7 @@
 
 ## 🌟 Project Overview
 
-**PreVaxa** is a cutting-edge vaccination management platform that combines modern web technologies with healthcare intelligence to deliver a comprehensive solution for tracking, managing, and visualizing vaccination data across populations.
+**Prevexa** is a cutting-edge vaccination management platform that combines modern web technologies with healthcare intelligence to deliver a comprehensive solution for tracking, managing, and visualizing vaccination data across populations.
 
 ### 🎯 Problem Statement
 - **Fragmented vaccination data** across different healthcare systems
@@ -33,7 +33,7 @@
 - **Complex vaccine record management**
 
 ### 💡 Our Solution
-PreVaxa addresses these challenges through:
+Prevexa addresses these challenges through:
 - **Interactive mapping** for real-time vaccination coverage visualization
 - **Intelligent reminder system** with age-group specific recommendations
 - **Live data integration** from government APIs
@@ -101,7 +101,7 @@ PreVaxa addresses these challenges through:
 - Modern gradient designs with accessibility focus
 - Responsive design for all devices
 - Intuitive navigation and user experience
-- Consistent PreVaxa theme across all pages
+- Consistent Prevexa theme across all pages
 
 ---
 
@@ -133,8 +133,8 @@ PreVaxa addresses these challenges through:
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/prevaxa.git
-   cd prevaxa
+   git clone https://github.com/yourusername/Prevexa.git
+   cd Prevexa
    ```
 
 2. **Create virtual environment**
@@ -205,7 +205,7 @@ PreVaxa addresses these challenges through:
 ## 📁 Project Structure
 
 ```
-PreVaxa/
+Prevexa/
 ├── app.py                    # Main Flask application with all routes
 ├── requirements.txt          # Python dependencies
 ├── README.md                # Project documentation
@@ -215,7 +215,7 @@ PreVaxa/
 │   ├── js/
 │   │   └── main.js          # Frontend JavaScript functionality
 │   └── images/
-│       └── download.png     # PreVaxa logo
+│       └── download.png     # Prevexa logo
 └── templates/
     ├── base.html            # Base template with navigation
     ├── home.html            # Interactive map page
@@ -277,7 +277,7 @@ def fetch_vaccine_centers(lat=None, lon=None):
 
 ## 📱 Responsive Design
 
-PreVaxa is fully responsive and optimized for:
+Prevexa is fully responsive and optimized for:
 - 📱 **Mobile devices** (320px and up)
 - 📟 **Tablets** (768px and up)
 - 💻 **Desktops** (1024px and up)
@@ -388,18 +388,18 @@ We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.
 
 ## 📞 Support & Contact
 
-- **Issues**: [GitHub Issues](https://github.com/yourusername/prevaxa/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/yourusername/prevaxa/discussions)
-- **Email**: support@prevaxa.com
+- **Issues**: [GitHub Issues](https://github.com/yourusername/Prevexa/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/yourusername/Prevexa/discussions)
+- **Email**: support@Prevexa.com
 
 ---
 
 <div align="center">
 
-**⭐ Star this repository if PreVaxa helped improve healthcare accessibility! ⭐**
+**⭐ Star this repository if Prevexa helped improve healthcare accessibility! ⭐**
 
 *Built with ❤️ for better healthcare outcomes*
 
-**🧬 PreVaxa - Where Technology Meets Healthcare Excellence 🧬**
+**🧬 Prevexa - Where Technology Meets Healthcare Excellence 🧬**
 
 </div>
