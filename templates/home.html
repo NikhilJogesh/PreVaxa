@@ -120,6 +120,146 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
+<!-- Video Preview Section -->
+<div class="video-section">
+    <div class="video-container">
+        <h2 class="video-title">
+            <span class="gradient-text">PreVaxa in Action</span>
+            <div class="title-underline"></div>
+        </h2>
+        <div class="video-wrapper">
+            <video id="prevaxa-video" class="preview-video" muted playsinline>
+                <source src="{{ url_for('static', filename='video.mp4') }}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="video-overlay" id="video-overlay">
+                <div class="play-indicator">
+                    <div class="pulse-ring"></div>
+                    <div class="play-icon">▶</div>
+                </div>
+            </div>
+        </div>
+        <div class="video-description">
+            <p>Experience the future of vaccination management with PreVaxa's comprehensive healthcare solution</p>
+        </div>
+    </div>
+</div>
+
+<!-- Video Control Script -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const video = document.getElementById('prevaxa-video');
+    const overlay = document.getElementById('video-overlay');
+
+    if (video && overlay) {
+        let isPlaying = false;
+        let playTimeout;
+        let breakTimeout;
+
+        // Function to play video
+        const playVideo = () => {
+            if (!isPlaying) {
+                isPlaying = true;
+                overlay.style.opacity = '0';
+                overlay.style.pointerEvents = 'none';
+
+                video.play().then(() => {
+                    console.log('Video started playing');
+                }).catch(e => {
+                    console.log('Video play failed:', e);
+                    showOverlay();
+                });
+            }
+        };
+
+        // Function to show overlay
+        const showOverlay = () => {
+            isPlaying = false;
+            overlay.style.opacity = '1';
+            overlay.style.pointerEvents = 'auto';
+        };
+
+        // Function to pause and schedule next play
+        const pauseAndScheduleNext = () => {
+            video.pause();
+            showOverlay();
+
+            // Schedule next play after 2 seconds
+            breakTimeout = setTimeout(() => {
+                playVideo();
+            }, 2000);
+        };
+
+        // Video ended event
+        video.addEventListener('ended', () => {
+            console.log('Video ended');
+            pauseAndScheduleNext();
+        });
+
+        // Video error event
+        video.addEventListener('error', (e) => {
+            console.log('Video error:', e);
+            showOverlay();
+        });
+
+        // Video loaded event
+        video.addEventListener('loadeddata', () => {
+            console.log('Video loaded successfully');
+        });
+
+        // Click to play/pause
+        overlay.addEventListener('click', (e) => {
+            e.preventDefault();
+            clearTimeout(breakTimeout);
+            clearTimeout(playTimeout);
+
+            if (video.paused) {
+                playVideo();
+            } else {
+                pauseAndScheduleNext();
+            }
+        });
+
+        // Video click handler
+        video.addEventListener('click', (e) => {
+            e.preventDefault();
+            clearTimeout(breakTimeout);
+            clearTimeout(playTimeout);
+
+            if (video.paused) {
+                playVideo();
+            } else {
+                pauseAndScheduleNext();
+            }
+        });
+
+        // Start the video cycle after page load
+        playTimeout = setTimeout(() => {
+            playVideo();
+        }, 3000);
+
+        // Intersection Observer for auto-play when in view
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    if (video.paused && !isPlaying) {
+                        setTimeout(() => playVideo(), 1000);
+                    }
+                } else {
+                    if (!video.paused) {
+                        clearTimeout(breakTimeout);
+                        clearTimeout(playTimeout);
+                        pauseAndScheduleNext();
+                    }
+                }
+            });
+        }, { threshold: 0.3 });
+
+        observer.observe(video);
+    }
+});
+</script>
+
 <!-- Enhanced Statistics Section -->
 <div class="stats-container">
     <div class="stats-box">
