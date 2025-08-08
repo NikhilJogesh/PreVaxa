@@ -1,0 +1,542 @@
+{% extends 'base.html' %}
+
+{% block title %}VaxiRADAR - PreVaxa{% endblock %}
+
+{% block content %}
+
+<!-- DNA Helix Animation -->
+<div class="dna-helix"></div>
+
+<!-- Logo Section -->
+<div class="logo-container">
+    <img src="{{ url_for('static', filename='images/download.png') }}"
+         alt="PreVaxa Vaccine Logo">
+</div>
+
+<!-- Main Title with Animation -->
+<h1>🎯 VaxiRADAR - Find Nearby Vaccine Centers</h1>
+
+<!-- Location Status Section -->
+<div class="location-status" id="locationStatus">
+    <div class="status-card">
+        <div class="status-icon">📍</div>
+        <div class="status-text">
+            <h3>Getting your location...</h3>
+            <p>Please allow location access to find nearby vaccine centers</p>
+        </div>
+    </div>
+</div>
+
+<!-- Vaccine Centers Container -->
+<div class="centers-container" id="centersContainer" style="display: none;">
+    <div class="centers-header">
+        <h2>🏥 Nearby Vaccine Centers</h2>
+        <p>Showing the 5 closest vaccination centers to your location</p>
+    </div>
+
+    <div class="centers-grid" id="centersGrid">
+        <!-- Centers will be populated by JavaScript -->
+    </div>
+</div>
+
+<!-- Loading Animation -->
+<div class="loading-container" id="loadingContainer" style="display: none;">
+    <div class="loading-spinner"></div>
+    <p>Searching for vaccine centers near you...</p>
+</div>
+
+<!-- Error Message -->
+<div class="error-container" id="errorContainer" style="display: none;">
+    <div class="error-card">
+        <div class="error-icon">⚠️</div>
+        <div class="error-text">
+            <h3>Location Access Required</h3>
+            <p>Please enable location services to find nearby vaccine centers.</p>
+            <button class="btn retry-btn" onclick="requestLocation()">Try Again</button>
+        </div>
+    </div>
+</div>
+
+<!-- Enhanced Styling for VaxiRADAR -->
+<style>
+/* VaxiRADAR Specific Styles */
+.location-status {
+    max-width: 800px;
+    margin: 40px auto;
+    animation: fadeInUp 1s ease-out 0.5s both;
+}
+
+.status-card, .error-card {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: var(--shadow);
+    border: 2px solid var(--primary-green);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.status-card::before, .error-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(76, 175, 80, 0.1), transparent);
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+.status-icon, .error-icon {
+    font-size: 3rem;
+    animation: pulse 2s infinite;
+}
+
+.status-text h3, .error-text h3 {
+    font-family: 'Poppins', sans-serif;
+    color: var(--dark-text);
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+}
+
+.status-text p, .error-text p {
+    color: var(--light-text);
+    font-size: 1.1rem;
+}
+
+.centers-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+    animation: fadeInUp 1s ease-out 0.7s both;
+}
+
+.centers-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.centers-header h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 2.2rem;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 15px;
+}
+
+.centers-header p {
+    color: var(--light-text);
+    font-size: 1.1rem;
+}
+
+.centers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.center-card {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: var(--shadow);
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    animation: slideInUp 0.6s ease-out;
+}
+
+.center-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(76, 175, 80, 0.2);
+    border-color: var(--primary-green);
+}
+
+.center-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: var(--gradient-primary);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.center-card:hover::before {
+    transform: scaleX(1);
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.center-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.center-icon {
+    font-size: 2.5rem;
+    animation: rotate 4s linear infinite;
+}
+
+.center-name {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--dark-text);
+    line-height: 1.3;
+}
+
+.center-distance {
+    background: var(--gradient-secondary);
+    color: var(--white);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: inline-block;
+    margin: 15px 0;
+    animation: bounce 2s infinite;
+}
+
+.center-details {
+    color: var(--light-text);
+    line-height: 1.6;
+}
+
+.center-details div {
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.center-details div span:first-child {
+    font-weight: 600;
+    color: var(--primary-green);
+}
+
+.loading-container {
+    text-align: center;
+    padding: 60px 20px;
+    animation: fadeInUp 1s ease-out;
+}
+
+.loading-container p {
+    margin-top: 20px;
+    font-size: 1.2rem;
+    color: var(--light-text);
+}
+
+.error-container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 0 20px;
+    animation: fadeInUp 1s ease-out;
+}
+
+.retry-btn {
+    margin-top: 20px;
+    animation: pulse 2s infinite;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .centers-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .status-card, .error-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 25px;
+    }
+
+    .center-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+
+    .centers-header h2 {
+        font-size: 1.8rem;
+    }
+}
+
+/* Additional animations for enhanced UX */
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-10px); }
+    60% { transform: translateY(-5px); }
+}
+</style>
+
+<!-- VaxiRADAR JavaScript -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    requestLocation();
+});
+
+function requestLocation() {
+    const locationStatus = document.getElementById('locationStatus');
+    const centersContainer = document.getElementById('centersContainer');
+    const loadingContainer = document.getElementById('loadingContainer');
+    const errorContainer = document.getElementById('errorContainer');
+
+    // Reset visibility
+    locationStatus.style.display = 'block';
+    centersContainer.style.display = 'none';
+    loadingContainer.style.display = 'none';
+    errorContainer.style.display = 'none';
+
+    // Update status to show location request
+    updateLocationRequestStatus();
+
+    if (navigator.geolocation) {
+        // Show loading after a brief delay
+        setTimeout(() => {
+            locationStatus.style.display = 'none';
+            loadingContainer.style.display = 'block';
+        }, 2000);
+
+        navigator.geolocation.getCurrentPosition(
+            function(position) {
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+
+                console.log('Location found:', lat, lon);
+
+                // Update status
+                updateLocationStatus(lat, lon);
+
+                // Fetch vaccine centers
+                fetchVaccineCenters(lat, lon);
+            },
+            function(error) {
+                console.error('Geolocation error:', error);
+                console.log('Falling back to dummy data...');
+
+                // Show error briefly, then load dummy data
+                showErrorThenDummyData();
+            },
+            {
+                enableHighAccuracy: true,
+                timeout: 15000,
+                maximumAge: 300000
+            }
+        );
+    } else {
+        console.log('Geolocation not supported, using dummy data');
+        showErrorThenDummyData();
+    }
+}
+
+function updateLocationRequestStatus() {
+    const statusCard = document.querySelector('.status-card');
+    statusCard.innerHTML = `
+        <div class="status-icon">📍</div>
+        <div class="status-text">
+            <h3>Location Access Required</h3>
+            <p>Please allow location access in your browser to find nearby vaccine centers. Click "Allow" when prompted.</p>
+        </div>
+    `;
+}
+
+function updateLocationStatus(lat, lon) {
+    const statusCard = document.querySelector('.status-card');
+    statusCard.innerHTML = `
+        <div class="status-icon">✅</div>
+        <div class="status-text">
+            <h3>Location Found!</h3>
+            <p>Coordinates: ${lat.toFixed(4)}, ${lon.toFixed(4)}</p>
+        </div>
+    `;
+}
+
+function fetchVaccineCenters(lat, lon) {
+    fetch(`/api/vaccine-centers?lat=${lat}&lon=${lon}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(centers => {
+            console.log('Received centers:', centers);
+            displayVaccineCenters(centers);
+        })
+        .catch(error => {
+            console.error('Error fetching centers:', error);
+            // Fallback to dummy data if API fails
+            loadDummyData();
+        });
+}
+
+function loadDummyData() {
+    console.log('Loading dummy data...');
+
+    // Generate dummy vaccine centers
+    const dummyCenters = [
+        {
+            name: "City General Hospital Vaccination Center",
+            distance: 1.2,
+            address: "123 Main Street, Downtown District",
+            phone: "+1-555-123-4567",
+            hours: "Mon-Fri: 9:00 AM - 5:00 PM, Sat: 9:00 AM - 2:00 PM"
+        },
+        {
+            name: "Community Health Center - Vaccine Hub",
+            distance: 2.8,
+            address: "456 Oak Avenue, Health District",
+            phone: "+1-555-234-5678",
+            hours: "Mon-Fri: 8:00 AM - 6:00 PM, Sat-Sun: 10:00 AM - 4:00 PM"
+        },
+        {
+            name: "Metro Medical Center Immunization Clinic",
+            distance: 3.5,
+            address: "789 Pine Road, Medical Complex",
+            phone: "+1-555-345-6789",
+            hours: "Mon-Fri: 7:00 AM - 7:00 PM, Weekends: 9:00 AM - 3:00 PM"
+        },
+        {
+            name: "Regional Healthcare Vaccination Site",
+            distance: 4.1,
+            address: "321 Elm Street, Healthcare Plaza",
+            phone: "+1-555-456-7890",
+            hours: "Mon-Fri: 9:00 AM - 5:00 PM, Sat: 9:00 AM - 1:00 PM"
+        },
+        {
+            name: "Primary Care Vaccine Distribution Center",
+            distance: 5.3,
+            address: "654 Maple Drive, Primary Care Building",
+            phone: "+1-555-567-8901",
+            hours: "Mon-Fri: 8:30 AM - 5:30 PM, Sat: 9:00 AM - 2:00 PM"
+        }
+    ];
+
+    // Hide loading and show centers
+    const loadingContainer = document.getElementById('loadingContainer');
+    const errorContainer = document.getElementById('errorContainer');
+
+    loadingContainer.style.display = 'none';
+    errorContainer.style.display = 'none';
+
+    displayVaccineCenters(dummyCenters);
+}
+
+function showErrorThenDummyData() {
+    const locationStatus = document.getElementById('locationStatus');
+    const loadingContainer = document.getElementById('loadingContainer');
+    const errorContainer = document.getElementById('errorContainer');
+
+    // Show error message first
+    locationStatus.style.display = 'none';
+    loadingContainer.style.display = 'none';
+    errorContainer.style.display = 'block';
+
+    // Update error message to be more informative
+    const errorCard = document.querySelector('.error-card');
+    errorCard.innerHTML = `
+        <div class="error-icon">📍</div>
+        <div class="error-text">
+            <h3>Location Access Denied</h3>
+            <p>No worries! We'll show you sample vaccine centers in your area.</p>
+            <button class="btn retry-btn" onclick="requestLocation()">Try Location Again</button>
+        </div>
+    `;
+
+    // After 3 seconds, load dummy data
+    setTimeout(() => {
+        errorContainer.style.display = 'none';
+        loadDummyData();
+    }, 3000);
+}
+
+function displayVaccineCenters(centers) {
+    const loadingContainer = document.getElementById('loadingContainer');
+    const centersContainer = document.getElementById('centersContainer');
+    const centersGrid = document.getElementById('centersGrid');
+    const errorContainer = document.getElementById('errorContainer');
+
+    // Hide loading and error, show centers
+    loadingContainer.style.display = 'none';
+    errorContainer.style.display = 'none';
+    centersContainer.style.display = 'block';
+
+    // Clear existing centers
+    centersGrid.innerHTML = '';
+
+    // Add each center with staggered animation
+    centers.forEach((center, index) => {
+        const centerCard = document.createElement('div');
+        centerCard.className = 'center-card';
+        centerCard.style.animationDelay = `${index * 0.2}s`;
+
+        centerCard.innerHTML = `
+            <div class="center-header">
+                <div class="center-icon">🏥</div>
+                <div class="center-name">${center.name}</div>
+            </div>
+
+            <div class="center-distance">
+                📍 ${center.distance} km away
+            </div>
+
+            <div class="center-details">
+                <div>
+                    <span>📍 Address:</span>
+                    <span>${center.address}</span>
+                </div>
+                <div>
+                    <span>📞 Phone:</span>
+                    <span>${center.phone}</span>
+                </div>
+                <div>
+                    <span>🕒 Hours:</span>
+                    <span>${center.hours}</span>
+                </div>
+            </div>
+        `;
+
+        centersGrid.appendChild(centerCard);
+    });
+
+    console.log('Displayed', centers.length, 'vaccine centers');
+}
+
+function showError() {
+    showErrorThenDummyData();
+}
+</script>
+
+{% endblock %}

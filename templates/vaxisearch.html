@@ -1,0 +1,653 @@
+{% extends 'base.html' %}
+
+{% block title %}VaxiSearch - PreVaxa{% endblock %}
+
+{% block content %}
+
+<!-- DNA Helix Animation -->
+<div class="dna-helix"></div>
+
+<!-- Logo Section -->
+<div class="logo-container">
+    <img src="{{ url_for('static', filename='images/download.png') }}"
+         alt="PreVaxa Vaccine Logo">
+</div>
+
+<!-- Main Title with Animation -->
+<h1>🔍 VaxiSearch - Vaccine Record Lookup</h1>
+
+<!-- Search Section -->
+<div class="search-section" id="searchSection">
+    <div class="search-container">
+        <div class="search-header">
+            <h2>🔎 Search Your Vaccine Record</h2>
+            <p>Enter your Vaccine ID and Date of Birth to view your vaccination history</p>
+        </div>
+
+        <form class="search-form" id="searchForm">
+            <div class="form-group">
+                <label for="vaccineId">
+                    <span class="form-icon">🆔</span>
+                    Vaccine ID (7 digits)
+                </label>
+                <input type="number" id="vaccineId" name="vaccine_id" placeholder="1234567"
+                       min="1000000" max="9999999" required>
+            </div>
+
+            <div class="form-group">
+                <label for="dateOfBirth">
+                    <span class="form-icon">📅</span>
+                    Date of Birth
+                </label>
+                <input type="date" id="dateOfBirth" name="date_of_birth" required>
+            </div>
+
+            <button type="submit" class="btn search-btn">
+                🔍 Search Records
+            </button>
+        </form>
+
+        <div class="divider">
+            <span>OR</span>
+        </div>
+
+        <button class="btn register-btn" onclick="showRegistration()">
+            📝 Register New Record
+        </button>
+    </div>
+</div>
+
+<!-- Registration Section -->
+<div class="registration-section" id="registrationSection" style="display: none;">
+    <div class="registration-container">
+        <div class="registration-header">
+            <h2>📝 Register New Vaccine Record</h2>
+            <p>Create a new vaccine record to track your immunization history</p>
+        </div>
+
+        <form class="registration-form" id="registrationForm">
+            <div class="form-group">
+                <label for="regDateOfBirth">
+                    <span class="form-icon">📅</span>
+                    Date of Birth
+                </label>
+                <input type="date" id="regDateOfBirth" name="date_of_birth" required>
+            </div>
+
+            <button type="submit" class="btn register-submit-btn">
+                ✨ Generate Vaccine ID
+            </button>
+        </form>
+
+        <button class="btn back-btn" onclick="showSearch()">
+            ← Back to Search
+        </button>
+    </div>
+</div>
+
+<!-- Results Section -->
+<div class="results-section" id="resultsSection" style="display: none;">
+    <div class="results-container">
+        <div class="results-header">
+            <h2 id="resultsTitle">📋 Your Vaccine Information</h2>
+        </div>
+
+        <div class="patient-info" id="patientInfo">
+            <!-- Patient information will be populated here -->
+        </div>
+
+        <div class="vaccines-grid" id="vaccinesGrid">
+            <!-- Recommended vaccines will be populated here -->
+        </div>
+
+        <div class="results-actions">
+            <button class="btn back-btn" onclick="showSearch()">
+                ← New Search
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Loading Animation -->
+<div class="loading-container" id="loadingContainer" style="display: none;">
+    <div class="loading-spinner"></div>
+    <p id="loadingText">Processing your request...</p>
+</div>
+
+<!-- Error Message -->
+<div class="error-container" id="errorContainer" style="display: none;">
+    <div class="error-card">
+        <div class="error-icon">❌</div>
+        <div class="error-text">
+            <h3 id="errorTitle">Record Not Found</h3>
+            <p id="errorMessage">The vaccine record could not be found. Please check your credentials or register a new record.</p>
+            <button class="btn retry-btn" onclick="showSearch()">Try Again</button>
+        </div>
+    </div>
+</div>
+
+<!-- Enhanced Styling for VaxiSearch -->
+<style>
+/* VaxiSearch Specific Styles */
+.search-section, .registration-section, .results-section {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 0 20px;
+    animation: fadeInUp 1s ease-out 0.5s both;
+}
+
+.search-container, .registration-container, .results-container {
+    background: var(--white);
+    border-radius: 25px;
+    padding: 40px;
+    box-shadow: var(--shadow);
+    border: 3px solid var(--primary-green);
+    position: relative;
+    overflow: hidden;
+}
+
+.search-container::before, .registration-container::before, .results-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(76, 175, 80, 0.1), transparent);
+    animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+.search-header, .registration-header, .results-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.search-header h2, .registration-header h2, .results-header h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 2rem;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 15px;
+}
+
+.search-header p, .registration-header p {
+    color: var(--light-text);
+    font-size: 1.1rem;
+}
+
+.search-form, .registration-form {
+    margin-bottom: 30px;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    color: var(--dark-text);
+    margin-bottom: 8px;
+    font-size: 1.1rem;
+}
+
+.form-icon {
+    font-size: 1.2rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 15px 20px;
+    border: 2px solid var(--light-gray);
+    border-radius: 15px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: var(--white);
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--primary-green);
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+    transform: translateY(-2px);
+}
+
+.search-btn, .register-btn, .register-submit-btn {
+    width: 100%;
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.search-btn {
+    background: var(--gradient-primary);
+    color: var(--white);
+    margin-bottom: 20px;
+}
+
+.register-btn, .register-submit-btn {
+    background: var(--gradient-secondary);
+    color: var(--white);
+}
+
+.search-btn:hover, .register-btn:hover, .register-submit-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(76, 175, 80, 0.3);
+}
+
+.divider {
+    text-align: center;
+    margin: 30px 0;
+    position: relative;
+}
+
+.divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--light-gray);
+}
+
+.divider span {
+    background: var(--white);
+    padding: 0 20px;
+    color: var(--light-text);
+    font-weight: 500;
+    position: relative;
+    z-index: 1;
+}
+
+.patient-info {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 20px;
+    padding: 25px;
+    margin-bottom: 30px;
+    border-left: 5px solid var(--primary-green);
+}
+
+.patient-card {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    text-align: center;
+}
+
+.patient-detail {
+    background: var(--white);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.patient-detail h4 {
+    font-family: 'Poppins', sans-serif;
+    color: var(--primary-green);
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+}
+
+.patient-detail p {
+    color: var(--dark-text);
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.vaccines-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 25px;
+    margin-bottom: 30px;
+}
+
+.vaccine-card {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: var(--shadow);
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    position: relative;
+    animation: slideInUp 0.6s ease-out;
+}
+
+.vaccine-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(76, 175, 80, 0.2);
+    border-color: var(--primary-green);
+}
+
+.vaccine-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.vaccine-icon {
+    font-size: 2.5rem;
+    animation: pulse 2s infinite;
+}
+
+.vaccine-name {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--dark-text);
+}
+
+.vaccine-details {
+    color: var(--light-text);
+    line-height: 1.6;
+}
+
+.vaccine-details div {
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.vaccine-details div span:first-child {
+    font-weight: 600;
+    color: var(--primary-green);
+    min-width: 60px;
+}
+
+.loading-container {
+    text-align: center;
+    padding: 60px 20px;
+    animation: fadeInUp 1s ease-out;
+}
+
+.loading-container p {
+    margin-top: 20px;
+    font-size: 1.2rem;
+    color: var(--light-text);
+}
+
+.error-container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 0 20px;
+    animation: fadeInUp 1s ease-out;
+}
+
+.error-card {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: var(--shadow);
+    border: 2px solid #f44336;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    text-align: center;
+    flex-direction: column;
+}
+
+.error-icon {
+    font-size: 3rem;
+    animation: pulse 2s infinite;
+}
+
+.error-text h3 {
+    font-family: 'Poppins', sans-serif;
+    color: var(--dark-text);
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+}
+
+.error-text p {
+    color: var(--light-text);
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+}
+
+.back-btn, .retry-btn {
+    background: var(--gradient-secondary);
+    color: var(--white);
+    padding: 12px 25px;
+    border: none;
+    border-radius: 20px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 20px;
+}
+
+.back-btn:hover, .retry-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(33, 150, 243, 0.3);
+}
+
+.results-actions {
+    text-align: center;
+    margin-top: 30px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .search-container, .registration-container, .results-container {
+        padding: 25px;
+        margin: 20px;
+    }
+
+    .vaccines-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .patient-card {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .vaccine-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+</style>
+
+<!-- VaxiSearch JavaScript -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchForm = document.getElementById('searchForm');
+    const registrationForm = document.getElementById('registrationForm');
+
+    searchForm.addEventListener('submit', handleSearch);
+    registrationForm.addEventListener('submit', handleRegistration);
+});
+
+function showSearch() {
+    document.getElementById('searchSection').style.display = 'block';
+    document.getElementById('registrationSection').style.display = 'none';
+    document.getElementById('resultsSection').style.display = 'none';
+    document.getElementById('errorContainer').style.display = 'none';
+}
+
+function showRegistration() {
+    document.getElementById('searchSection').style.display = 'none';
+    document.getElementById('registrationSection').style.display = 'block';
+    document.getElementById('resultsSection').style.display = 'none';
+    document.getElementById('errorContainer').style.display = 'none';
+}
+
+function showLoading(text = 'Processing your request...') {
+    document.getElementById('loadingText').textContent = text;
+    document.getElementById('loadingContainer').style.display = 'block';
+    document.getElementById('searchSection').style.display = 'none';
+    document.getElementById('registrationSection').style.display = 'none';
+    document.getElementById('resultsSection').style.display = 'none';
+    document.getElementById('errorContainer').style.display = 'none';
+}
+
+function showError(title, message) {
+    document.getElementById('errorTitle').textContent = title;
+    document.getElementById('errorMessage').textContent = message;
+    document.getElementById('errorContainer').style.display = 'block';
+    document.getElementById('loadingContainer').style.display = 'none';
+    document.getElementById('searchSection').style.display = 'none';
+    document.getElementById('registrationSection').style.display = 'none';
+    document.getElementById('resultsSection').style.display = 'none';
+}
+
+function handleSearch(event) {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+    const data = {
+        vaccine_id: formData.get('vaccine_id'),
+        date_of_birth: formData.get('date_of_birth')
+    };
+
+    showLoading('Searching vaccine records...');
+
+    fetch('/api/search-vaccine-record', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result.found) {
+            displayResults(result, 'search');
+        } else {
+            showError('Record Not Found', result.error || 'No vaccine record found with the provided credentials.');
+        }
+    })
+    .catch(error => {
+        console.error('Search error:', error);
+        showError('Search Failed', 'An error occurred while searching for your record. Please try again.');
+    });
+}
+
+function handleRegistration(event) {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+    const data = {
+        date_of_birth: formData.get('date_of_birth')
+    };
+
+    showLoading('Generating your Vaccine ID...');
+
+    fetch('/api/register-vaccine-record', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result.success) {
+            displayResults(result, 'registration');
+        } else {
+            showError('Registration Failed', result.error || 'Failed to register new vaccine record.');
+        }
+    })
+    .catch(error => {
+        console.error('Registration error:', error);
+        showError('Registration Failed', 'An error occurred during registration. Please try again.');
+    });
+}
+
+function displayResults(data, type) {
+    const resultsSection = document.getElementById('resultsSection');
+    const patientInfo = document.getElementById('patientInfo');
+    const vaccinesGrid = document.getElementById('vaccinesGrid');
+    const resultsTitle = document.getElementById('resultsTitle');
+
+    // Update title based on type
+    if (type === 'registration') {
+        resultsTitle.textContent = '🎉 Registration Successful!';
+    } else {
+        resultsTitle.textContent = '📋 Your Vaccine Information';
+    }
+
+    // Display patient information
+    patientInfo.innerHTML = `
+        <div class="patient-card">
+            <div class="patient-detail">
+                <h4>🆔 Vaccine ID</h4>
+                <p>${data.vaccine_id}</p>
+            </div>
+            <div class="patient-detail">
+                <h4>🎂 Age</h4>
+                <p>${data.age} years</p>
+            </div>
+            <div class="patient-detail">
+                <h4>💉 Recommended Vaccines</h4>
+                <p>${data.recommended_vaccines.length}</p>
+            </div>
+        </div>
+    `;
+
+    // Display recommended vaccines
+    vaccinesGrid.innerHTML = '';
+    data.recommended_vaccines.forEach((vaccine, index) => {
+        const vaccineCard = document.createElement('div');
+        vaccineCard.className = 'vaccine-card';
+        vaccineCard.style.animationDelay = `${index * 0.2}s`;
+
+        vaccineCard.innerHTML = `
+            <div class="vaccine-header">
+                <div class="vaccine-icon">💉</div>
+                <div class="vaccine-name">${vaccine.name}</div>
+            </div>
+
+            <div class="vaccine-details">
+                <div>
+                    <span>💊 Doses:</span>
+                    <span>${vaccine.doses}</span>
+                </div>
+                <div>
+                    <span>📅 Schedule:</span>
+                    <span>${vaccine.schedule}</span>
+                </div>
+            </div>
+        `;
+
+        vaccinesGrid.appendChild(vaccineCard);
+    });
+
+    // Show results
+    document.getElementById('loadingContainer').style.display = 'none';
+    resultsSection.style.display = 'block';
+}
+</script>
+
+{% endblock %}

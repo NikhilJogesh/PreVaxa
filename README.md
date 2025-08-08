@@ -6,12 +6,13 @@
 
 **🏆 Advanced Healthcare Technology Solution**
 
-[![Flask](https://img.shields.io/badge/Flask-2.0.1-blue.svg)](https://flask.palletsprojects.com/)
+[![Flask](https://img.shields.io/badge/Flask-2.3.3-blue.svg)](https://flask.palletsprojects.com/)
 [![Python](https://img.shields.io/badge/Python-3.8+-green.svg)](https://python.org)
+[![MongoDB](https://img.shields.io/badge/MongoDB-4.6+-green.svg)](https://mongodb.com)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Hackathon](https://img.shields.io/badge/Built%20for-Hackathon-ff69b4.svg)](https://github.com)
 
-*Revolutionizing vaccination management with real-time tracking, interactive maps, and intelligent analytics*
+*Revolutionizing vaccination management with real-time tracking, interactive maps, intelligent analytics, and comprehensive record management*
 
 [🚀 Live Demo](#demo) • [📖 Features](#features) • [⚡ Quick Start](#installation) • [🎯 Usage](#usage)
 
@@ -28,6 +29,8 @@
 - **Lack of real-time tracking** for vaccination coverage
 - **Poor accessibility** to vaccination updates and reminders
 - **Limited visualization** of vaccination trends and demographics
+- **Difficulty finding nearby vaccination centers**
+- **Complex vaccine record management**
 
 ### 💡 Our Solution
 PreVaxa addresses these challenges through:
@@ -35,6 +38,9 @@ PreVaxa addresses these challenges through:
 - **Intelligent reminder system** with age-group specific recommendations
 - **Live data integration** from government APIs
 - **Professional dashboard** with comprehensive analytics
+- **Location-based vaccine center finder** with GPS integration
+- **Complete vaccine record management** with MongoDB database
+- **Age-appropriate vaccine recommendations** based on WHO guidelines
 
 ---
 
@@ -46,11 +52,37 @@ PreVaxa addresses these challenges through:
 - Population density and coverage correlation
 - Mobile-responsive map interface
 
-### 📊 **Advanced Data Analytics**
+### 🔍 **VaxiSearch - Vaccine Record Management**
+- **Search existing records** by 7-digit Vaccine ID + Date of Birth
+- **Register new vaccine records** with automatic ID generation
+- **Age-based vaccine recommendations** following WHO guidelines
+- **MongoDB cloud database integration** with fallback storage
+- **Comprehensive vaccine schedules** for all age groups:
+  - Infants (0-1 years): Hepatitis B, DTaP, Hib, Polio, PCV13
+  - Toddlers (1-2 years): MMR, Varicella, Hepatitis A
+  - Children (2-11 years): Annual Influenza, DTaP boosters
+  - Adolescents (11-18 years): Tdap, HPV, Meningococcal
+  - Adults (18-65 years): Annual Flu, Td/Tdap, COVID-19, HPV
+  - Seniors (65+ years): Pneumococcal, Shingles, enhanced schedules
+
+### 📍 **VaxiRADAR - Location-Based Center Finder**
+- **GPS-powered location detection** using browser geolocation
+- **Find 5 nearest vaccine centers** with distance calculation
+- **Complete center information**: name, address, phone, hours
+- **Haversine formula** for accurate distance calculations
+- **Fallback randomized data** when APIs unavailable
+- **Professional UI** with smooth animations and responsive design
+
+### 📊 **Advanced Data Analytics (Info Page)**
 - Comprehensive vaccination statistics dashboard
 - Age-group demographic analysis
 - Trend visualization with interactive charts
-- Real-time data processing and display
+- **Breaking News & Updates section** with:
+  - 5-7 real-time vaccine news items
+  - Category badges and timestamps
+  - Read time and source information
+  - Auto-refresh every 5 minutes
+  - Professional news card layout
 
 ### 🔔 **Smart Reminder System**
 - Personalized vaccine reminders based on age groups
@@ -69,6 +101,7 @@ PreVaxa addresses these challenges through:
 - Modern gradient designs with accessibility focus
 - Responsive design for all devices
 - Intuitive navigation and user experience
+- Consistent PreVaxa theme across all pages
 
 ---
 
@@ -76,11 +109,14 @@ PreVaxa addresses these challenges through:
 
 | Category | Technology | Purpose |
 |----------|------------|---------|
-| **Backend** | Flask 2.0.1 | Web framework and API handling |
+| **Backend** | Flask 2.3.3 | Web framework and API handling |
+| **Database** | MongoDB Atlas | Cloud database for vaccine records |
+| **Database Driver** | PyMongo 4.6.0 | MongoDB Python integration |
 | **Frontend** | HTML5, CSS3, JavaScript | User interface and interactions |
 | **Mapping** | Leaflet.js | Interactive map visualization |
 | **Charts** | Chart.js | Data visualization and analytics |
 | **APIs** | Government Health APIs | Real-time vaccination data |
+| **Geolocation** | Browser Geolocation API | Location-based services |
 | **Styling** | Custom CSS with animations | Professional healthcare UI |
 
 ---
@@ -91,6 +127,7 @@ PreVaxa addresses these challenges through:
 - Python 3.8 or higher
 - pip package manager
 - Modern web browser
+- MongoDB Atlas account (optional - fallback storage available)
 
 ### Installation
 
@@ -111,12 +148,20 @@ PreVaxa addresses these challenges through:
    pip install -r requirements.txt
    ```
 
-4. **Run the application**
+4. **Configure MongoDB (Optional)**
+   ```python
+   # In app.py, update the MongoDB connection string:
+   MONGO_URI = "your-mongodb-atlas-connection-string"
+   # Or use local MongoDB:
+   # MONGO_URI = "mongodb://localhost:27017/"
+   ```
+
+5. **Run the application**
    ```bash
    python app.py
    ```
 
-5. **Access the application**
+6. **Access the application**
    ```
    Open your browser and navigate to: http://localhost:5000
    ```
@@ -126,44 +171,58 @@ PreVaxa addresses these challenges through:
 ## 🎯 Usage Guide
 
 ### 🏠 **Home Page - Vaccination Coverage Map**
-- View interactive map showing vaccination coverage across regions
-- Click on markers to see detailed vaccination center information
-- Real-time data updates every 30 seconds
-- Filter by vaccine type and age groups
+- View interactive vaccination coverage maps
+- Explore geographic distribution of vaccination data
+- Access real-time statistics and trends
+- Navigate to other system features
 
-### 📈 **Updates Page - Live Health News**
+### 🔍 **VaxiSearch Page - Vaccine Record Management**
+- **Search Records**: Enter 7-digit Vaccine ID + Date of Birth
+- **Register New**: Enter Date of Birth to generate new Vaccine ID
+- **View Recommendations**: See age-appropriate vaccine schedules
+- **Database Integration**: Automatic MongoDB storage with fallback
+
+### 📍 **VaxiRADAR Page - Find Vaccine Centers**
+- **Allow Location Access** when prompted by browser
+- **View 5 Nearest Centers** with distances and details
+- **Get Complete Information**: addresses, phone numbers, hours
+- **Responsive Design** works on all devices
+
+### 📊 **Info Page - Analytics & News**
+- **Explore Vaccination Statistics** with interactive charts
+- **Read Breaking News** about vaccines and health policies
+- **Auto-Refresh News** every 5 minutes for latest updates
+- **Filter by Categories** and view detailed information
+
+### 📰 **Updates Page - Live Health News**
 - Access latest vaccination policies and guidelines
 - Receive personalized vaccine reminders
 - View mobile vaccination camp schedules
 - Get emergency health notifications
 
-### 📊 **Charts Page - Data Analytics**
-- Explore comprehensive vaccination statistics
-- Analyze trends across different demographics
-- Interactive charts with drill-down capabilities
-- Export data for further analysis
-
 ---
 
-## 🏗️ Project Structure
+## 📁 Project Structure
 
 ```
 PreVaxa/
-├── app.py                 # Main Flask application
-├── requirements.txt       # Python dependencies
-├── README.md             # Project documentation
-├── data/
-│   └── vaccination_data.json  # Sample vaccination data
+├── app.py                    # Main Flask application with all routes
+├── requirements.txt          # Python dependencies
+├── README.md                # Project documentation
 ├── static/
 │   ├── css/
-│   │   └── styles.css    # Custom styling and animations
+│   │   └── styles.css       # Global styles and animations
+│   ├── js/
+│   │   └── main.js          # Frontend JavaScript functionality
 │   └── images/
-│       └── download.png  # PreVaxa logo
+│       └── download.png     # PreVaxa logo
 └── templates/
-    ├── base.html         # Base template with navigation
-    ├── home.html         # Interactive map page
-    ├── updates.html      # News and updates page
-    └── charts.html       # Analytics dashboard
+    ├── base.html            # Base template with navigation
+    ├── home.html            # Interactive map page
+    ├── vaxisearch.html      # Vaccine record management
+    ├── vaxiradar.html       # Location-based center finder
+    ├── info.html            # Analytics and breaking news
+    └── updates.html         # News and updates page
 ```
 
 ---
@@ -193,6 +252,27 @@ def fetch_random_vaccine_reminders():
 - Population density overlays
 - Real-time coverage updates
 
+### 🔍 **MongoDB Integration**
+```python
+def search_vaccine_record(vaccine_id, dob):
+    """Search for vaccine record in MongoDB with fallback storage"""
+    if vaccine_records is None:
+        # Fallback to in-memory storage
+        for record in fallback_records:
+            if record['vaccine_id'] == int(vaccine_id) and record['date_of_birth'] == dob:
+                return record
+        return None
+    # MongoDB search logic...
+```
+
+### 📍 **Location Services**
+```python
+def fetch_vaccine_centers(lat=None, lon=None):
+    """Fetch vaccine centers near coordinates using Haversine formula"""
+    # Calculate distances and return 5 nearest centers
+    # Fallback to randomized data if APIs unavailable
+```
+
 ---
 
 ## 📱 Responsive Design
@@ -218,6 +298,7 @@ PreVaxa is fully responsive and optimized for:
 - **Fast loading times** with optimized assets
 - **Error handling** with user-friendly messages
 - **Progressive enhancement** for all devices
+- **Consistent theme** across all pages and features
 
 ---
 
@@ -230,6 +311,9 @@ PreVaxa is fully responsive and optimized for:
 - [ ] **Telemedicine Integration** for remote consultations
 - [ ] **Advanced Analytics** with machine learning
 - [ ] **API Development** for third-party integrations
+- [ ] **Real-time Notifications** for vaccine appointments
+- [ ] **QR Code Integration** for quick record access
+- [ ] **Government API Integration** for live vaccine center data
 
 ---
 
@@ -241,22 +325,46 @@ PreVaxa is fully responsive and optimized for:
 - **🌍 Social Impact**: Improves public health outcomes
 - **🚀 Scalability**: Designed for global deployment
 - **🎨 User Experience**: Professional healthcare-grade interface
+- **📊 Data Management**: Complete vaccine record system
+- **📍 Location Services**: GPS-powered center finder
 
 ### Competitive Advantages
-1. **Real-time data integration** from government sources
-2. **Interactive mapping** with geographic insights
-3. **Intelligent reminder system** with personalized recommendations
-4. **Professional UI/UX** rivaling commercial healthcare platforms
-5. **Comprehensive analytics** for data-driven decisions
+1. **Complete vaccine record management** with MongoDB integration
+2. **Location-based services** with GPS and distance calculations
+3. **Real-time data integration** from government sources
+4. **Interactive mapping** with geographic insights
+5. **Intelligent reminder system** with personalized recommendations
+6. **Professional UI/UX** rivaling commercial healthcare platforms
+7. **Comprehensive analytics** with breaking news integration
+8. **Fallback storage systems** ensuring 100% uptime
+9. **Age-appropriate recommendations** following WHO guidelines
+10. **Seamless responsive design** across all devices
+
+---
+
+## 🔧 Database Schema
+
+### Vaccine Records Collection
+```json
+{
+  "_id": "ObjectId",
+  "vaccine_id": 1234567,                    // 7-digit unique identifier
+  "date_of_birth": "1990-01-15",           // YYYY-MM-DD format
+  "registration_date": "2025-08-08T07:45:02", // ISO timestamp
+  "vaccines_taken": [],                     // Future expansion
+  "next_due": []                           // Future expansion
+}
+```
 
 ---
 
 ## 👥 Team
 
-**Mommos and Microservices**
-- Innovative healthcare technology solutions
+**Healthcare Technology Innovators**
 - Full-stack development expertise
+- Healthcare domain knowledge
 - User-centered design approach
+- Database architecture specialists
 
 ---
 
@@ -291,5 +399,7 @@ We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.
 **⭐ Star this repository if PreVaxa helped improve healthcare accessibility! ⭐**
 
 *Built with ❤️ for better healthcare outcomes*
+
+**🧬 PreVaxa - Where Technology Meets Healthcare Excellence 🧬**
 
 </div>

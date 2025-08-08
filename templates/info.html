@@ -1,0 +1,686 @@
+{% extends 'base.html' %}
+
+{% block title %}Info - PreVaxa{% endblock %}
+
+{% block content %}
+
+<!-- DNA Helix Animation -->
+<div class="dna-helix"></div>
+
+<!-- Main Title with Animation -->
+<h1>Vaccination Data Information</h1>
+
+<!-- Info Container -->
+<div style="max-width: 1400px; margin: 0 auto; padding: 20px;">
+
+    <!-- Introduction Section -->
+    <div class="stats-box" style="margin-bottom: 40px; text-align: center; animation: fadeInUp 1s ease-out 0.2s both;">
+        <h3>📊 Interactive Data Dashboard</h3>
+        <p style="color: var(--light-text); font-size: 1.1rem; line-height: 1.6; max-width: 800px; margin: 0 auto;">
+            Explore comprehensive vaccination statistics across different age groups and demographics.
+            Our real-time data visualization helps track vaccination progress and identify trends.
+        </p>
+    </div>
+
+    <!-- Statistics Grid -->
+    <div class="stats-grid" style="margin-bottom: 50px;">
+        <div class="stat-item">
+            <div class="stat-number">89.2%</div>
+            <div class="stat-label">Overall Coverage</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">2.4M</div>
+            <div class="stat-label">Doses Administered</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">1,247</div>
+            <div class="stat-label">Active Centers</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">94.7%</div>
+            <div class="stat-label">Booster Rate</div>
+        </div>
+    </div>
+
+    <!-- Pie Charts Section -->
+    <div class="info-section" style="margin-bottom: 60px;">
+        <h3>🥧 Distribution Analysis - Pie Charts</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 30px; margin-top: 30px;">
+
+            <!-- Age Group Distribution -->
+            <div class="chart-container">
+                <h4>Age Group Distribution</h4>
+                <canvas id="ageGroupChart" width="400" height="400"></canvas>
+            </div>
+
+            <!-- Vaccine Type Distribution -->
+            <div class="chart-container">
+                <h4>Vaccine Type Distribution</h4>
+                <canvas id="vaccineTypeChart" width="400" height="400"></canvas>
+            </div>
+
+            <!-- Gender Distribution -->
+            <div class="chart-container">
+                <h4>Gender Distribution</h4>
+                <canvas id="genderChart" width="400" height="400"></canvas>
+            </div>
+
+            <!-- Regional Coverage -->
+            <div class="chart-container">
+                <h4>Regional Coverage</h4>
+                <canvas id="regionalChart" width="400" height="400"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Key Insights Section -->
+    <div class="insights-section" style="margin-bottom: 50px;">
+        <h3>💡 Key Insights</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-top: 30px;">
+
+            <div class="insight-card">
+                <div class="insight-icon">📈</div>
+                <div class="insight-content">
+                    <h4>Vaccination Trend</h4>
+                    <p>Daily vaccination rates have increased by 23% over the past month, showing strong public health engagement.</p>
+                </div>
+            </div>
+
+            <div class="insight-card">
+                <div class="insight-icon">🎯</div>
+                <div class="insight-content">
+                    <h4>Target Achievement</h4>
+                    <p>We've reached 89.2% of our vaccination target, exceeding WHO recommendations for community immunity.</p>
+                </div>
+            </div>
+
+            <div class="insight-card">
+                <div class="insight-icon">🏥</div>
+                <div class="insight-content">
+                    <h4>Center Efficiency</h4>
+                    <p>Average wait time at vaccination centers has decreased to 12 minutes, improving patient experience.</p>
+                </div>
+            </div>
+
+            <div class="insight-card">
+                <div class="insight-icon">🌍</div>
+                <div class="insight-content">
+                    <h4>Regional Progress</h4>
+                    <p>Urban areas show 94% coverage while rural regions maintain 84%, indicating successful outreach programs.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vaccination Progress Timeline -->
+    <div class="timeline-section" style="margin-bottom: 50px;">
+        <h3>📅 Vaccination Progress Timeline</h3>
+        <div class="timeline-container">
+            <div class="timeline-item">
+                <div class="timeline-date">Jan 2024</div>
+                <div class="timeline-content">
+                    <h4>Campaign Launch</h4>
+                    <p>National vaccination campaign initiated with 500 centers</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-date">Mar 2024</div>
+                <div class="timeline-content">
+                    <h4>Milestone Reached</h4>
+                    <p>1 million doses administered, 750 centers operational</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-date">Jun 2024</div>
+                <div class="timeline-content">
+                    <h4>Booster Program</h4>
+                    <p>Booster dose program launched for eligible population</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-date">Aug 2024</div>
+                <div class="timeline-content">
+                    <h4>Current Status</h4>
+                    <p>2.4M doses administered, 1,247 active centers</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bar Charts Section -->
+    <div class="info-section">
+        <h3>📊 Trend Analysis - Bar Charts</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(500px, 1fr)); gap: 30px; margin-top: 30px;">
+
+            <!-- Monthly Progress -->
+            <div class="chart-container">
+                <h4>Monthly Vaccination Progress</h4>
+                <canvas id="monthlyChart" width="500" height="300"></canvas>
+            </div>
+
+            <!-- Weekly Trends -->
+            <div class="chart-container">
+                <h4>Weekly Vaccination Trends</h4>
+                <canvas id="weeklyChart" width="500" height="300"></canvas>
+            </div>
+
+            <!-- Center Performance -->
+            <div class="chart-container">
+                <h4>Top Performing Centers</h4>
+                <canvas id="centerChart" width="500" height="300"></canvas>
+            </div>
+
+            <!-- Demographic Breakdown -->
+            <div class="chart-container">
+                <h4>Demographic Vaccination Rates</h4>
+                <canvas id="demographicChart" width="500" height="300"></canvas>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Enhanced Styling -->
+<style>
+.info-section {
+    animation: fadeInUp 1s ease-out 0.4s both;
+}
+
+.info-section h3 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 2rem;
+    color: var(--dark-text);
+    text-align: center;
+    margin-bottom: 30px;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.chart-container {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: var(--shadow);
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    animation: slideInUp 0.6s ease-out;
+}
+
+.chart-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(76, 175, 80, 0.15);
+    border-color: var(--primary-green);
+}
+
+.chart-container h4 {
+    font-family: 'Poppins', sans-serif;
+    color: var(--dark-text);
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 1.3rem;
+}
+
+.insights-section {
+    animation: fadeInUp 1s ease-out 0.6s both;
+}
+
+.insights-section h3 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 2rem;
+    color: var(--dark-text);
+    text-align: center;
+    margin-bottom: 30px;
+    background: var(--gradient-secondary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.insight-card {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: var(--shadow);
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    animation: slideInUp 0.6s ease-out;
+}
+
+.insight-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(33, 150, 243, 0.15);
+    border-color: var(--accent-blue);
+}
+
+.insight-icon {
+    font-size: 2.5rem;
+    animation: pulse 2s infinite;
+}
+
+.insight-content h4 {
+    font-family: 'Poppins', sans-serif;
+    color: var(--dark-text);
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+}
+
+.insight-content p {
+    color: var(--light-text);
+    line-height: 1.6;
+}
+
+.timeline-section {
+    animation: fadeInUp 1s ease-out 0.8s both;
+}
+
+.timeline-section h3 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 2rem;
+    color: var(--dark-text);
+    text-align: center;
+    margin-bottom: 40px;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.timeline-container {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.timeline-container::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: var(--gradient-primary);
+    transform: translateX(-50%);
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+    animation: slideInUp 0.6s ease-out;
+}
+
+.timeline-item:nth-child(odd) {
+    flex-direction: row;
+}
+
+.timeline-item:nth-child(even) {
+    flex-direction: row-reverse;
+}
+
+.timeline-date {
+    background: var(--gradient-secondary);
+    color: var(--white);
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-weight: 600;
+    min-width: 120px;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+.timeline-content {
+    background: var(--white);
+    border-radius: 15px;
+    padding: 20px;
+    margin: 0 30px;
+    box-shadow: var(--shadow);
+    flex: 1;
+    max-width: 300px;
+}
+
+.timeline-content h4 {
+    font-family: 'Poppins', sans-serif;
+    color: var(--dark-text);
+    margin-bottom: 8px;
+}
+
+.timeline-content p {
+    color: var(--light-text);
+    line-height: 1.5;
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .timeline-container::before {
+        left: 20px;
+    }
+
+    .timeline-item {
+        flex-direction: column !important;
+        align-items: flex-start;
+        padding-left: 50px;
+    }
+
+    .timeline-date {
+        position: absolute;
+        left: -10px;
+        min-width: 80px;
+        font-size: 0.9rem;
+    }
+
+    .timeline-content {
+        margin: 10px 0 0 0;
+        max-width: none;
+    }
+}
+</style>
+
+<!-- Chart.js Library -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Info Charts JavaScript -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Age Group Distribution Pie Chart
+    const ageCtx = document.getElementById('ageGroupChart').getContext('2d');
+    new Chart(ageCtx, {
+        type: 'pie',
+        data: {
+            labels: ['0-18 years', '19-35 years', '36-50 years', '51-65 years', '65+ years'],
+            datasets: [{
+                data: [15, 28, 25, 20, 12],
+                backgroundColor: [
+                    '#4CAF50',
+                    '#81C784',
+                    '#2196F3',
+                    '#64B5F6',
+                    '#FFC107'
+                ],
+                borderWidth: 2,
+                borderColor: '#fff'
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        padding: 20,
+                        usePointStyle: true
+                    }
+                }
+            }
+        }
+    });
+
+    // Vaccine Type Distribution
+    const vaccineCtx = document.getElementById('vaccineTypeChart').getContext('2d');
+    new Chart(vaccineCtx, {
+        type: 'pie',
+        data: {
+            labels: ['Pfizer-BioNTech', 'Moderna', 'Johnson & Johnson', 'AstraZeneca', 'Others'],
+            datasets: [{
+                data: [35, 30, 15, 12, 8],
+                backgroundColor: [
+                    '#4CAF50',
+                    '#2196F3',
+                    '#FF9800',
+                    '#9C27B0',
+                    '#607D8B'
+                ],
+                borderWidth: 2,
+                borderColor: '#fff'
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        padding: 20,
+                        usePointStyle: true
+                    }
+                }
+            }
+        }
+    });
+
+    // Gender Distribution
+    const genderCtx = document.getElementById('genderChart').getContext('2d');
+    new Chart(genderCtx, {
+        type: 'pie',
+        data: {
+            labels: ['Female', 'Male', 'Other'],
+            datasets: [{
+                data: [52, 47, 1],
+                backgroundColor: [
+                    '#E91E63',
+                    '#2196F3',
+                    '#4CAF50'
+                ],
+                borderWidth: 2,
+                borderColor: '#fff'
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        padding: 20,
+                        usePointStyle: true
+                    }
+                }
+            }
+        }
+    });
+
+    // Regional Coverage
+    const regionalCtx = document.getElementById('regionalChart').getContext('2d');
+    new Chart(regionalCtx, {
+        type: 'pie',
+        data: {
+            labels: ['Urban Areas', 'Suburban Areas', 'Rural Areas', 'Remote Areas'],
+            datasets: [{
+                data: [40, 30, 25, 5],
+                backgroundColor: [
+                    '#4CAF50',
+                    '#2196F3',
+                    '#FF9800',
+                    '#F44336'
+                ],
+                borderWidth: 2,
+                borderColor: '#fff'
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        padding: 20,
+                        usePointStyle: true
+                    }
+                }
+            }
+        }
+    });
+
+    // Monthly Progress Bar Chart
+    const monthlyCtx = document.getElementById('monthlyChart').getContext('2d');
+    new Chart(monthlyCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
+            datasets: [{
+                label: 'Doses Administered (thousands)',
+                data: [120, 190, 300, 250, 280, 320, 380, 420],
+                backgroundColor: 'rgba(76, 175, 80, 0.8)',
+                borderColor: '#4CAF50',
+                borderWidth: 2,
+                borderRadius: 8
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: 'rgba(0,0,0,0.1)'
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
+
+    // Weekly Trends
+    const weeklyCtx = document.getElementById('weeklyChart').getContext('2d');
+    new Chart(weeklyCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            datasets: [{
+                label: 'Daily Vaccinations',
+                data: [1200, 1500, 1800, 1600, 1900, 800, 600],
+                backgroundColor: 'rgba(33, 150, 243, 0.8)',
+                borderColor: '#2196F3',
+                borderWidth: 2,
+                borderRadius: 8
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: 'rgba(0,0,0,0.1)'
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
+
+    // Center Performance
+    const centerCtx = document.getElementById('centerChart').getContext('2d');
+    new Chart(centerCtx, {
+        type: 'bar',
+        data: {
+            labels: ['City General', 'Metro Medical', 'Regional HC', 'Community Center', 'District Hospital'],
+            datasets: [{
+                label: 'Weekly Doses',
+                data: [850, 720, 680, 590, 540],
+                backgroundColor: 'rgba(255, 152, 0, 0.8)',
+                borderColor: '#FF9800',
+                borderWidth: 2,
+                borderRadius: 8
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: 'rgba(0,0,0,0.1)'
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
+
+    // Demographic Breakdown
+    const demographicCtx = document.getElementById('demographicChart').getContext('2d');
+    new Chart(demographicCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Healthcare Workers', 'Elderly (65+)', 'Essential Workers', 'Adults (18-64)', 'Teens (12-17)'],
+            datasets: [{
+                label: 'Vaccination Rate (%)',
+                data: [98, 94, 87, 82, 75],
+                backgroundColor: 'rgba(156, 39, 176, 0.8)',
+                borderColor: '#9C27B0',
+                borderWidth: 2,
+                borderRadius: 8
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 100,
+                    grid: {
+                        color: 'rgba(0,0,0,0.1)'
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
+});
+</script>
+
+{% endblock %}
