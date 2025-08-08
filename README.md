@@ -1,4 +1,4 @@
-# 🧬 Prevexa - Professional Vaccination Management System
+# 🧬 PreVexa - Professional Vaccination Management System
 
 <div align="center">
 
