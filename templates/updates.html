@@ -3,53 +3,235 @@
 {% block title %}Updates - PreVaxa{% endblock %}
 
 {% block content %}
-<h1 style="color:#93c572; text-align:center;">Vaccine Updates</h1>
 
-<div style="max-width: 800px; margin: 20px auto;">
+<!-- DNA Helix Animation -->
+<div class="dna-helix"></div>
 
-    <!-- Updates List -->
-    <div style="background-color: #f5f5f5; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-        <h3 style="color:#93c572;">Latest Updates</h3>
-        <ul style="list-style-type: none; padding: 0;">
+<!-- Main Title with Animation -->
+<h1>Latest Vaccine Updates</h1>
+
+<!-- Updates Container -->
+<div style="max-width: 1000px; margin: 0 auto; padding: 20px;">
+
+    <!-- Latest Updates Section -->
+    <div class="stats-box" style="margin-bottom: 30px; animation: fadeInUp 1s ease-out 0.3s both;">
+        <h3>📰 Breaking News & Updates</h3>
+
+        <div style="display: grid; gap: 20px;">
             {% if updates_data %}
                 {% for update in updates_data %}
-                    <li style="padding: 10px; border-bottom: 1px solid #e0e0e0;">
-                        <strong>{{ update.date }}</strong> - {{ update.message }}
-                    </li>
+                    <div class="update-card" style="
+                        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+                        padding: 25px;
+                        border-radius: 15px;
+                        border-left: 5px solid var(--primary-green);
+                        transition: all 0.3s ease;
+                        position: relative;
+                        overflow: hidden;
+                        animation: slideInLeft 0.6s ease-out {{ loop.index0 * 0.1 }}s both;
+                    " onmouseover="this.style.transform='translateX(10px) scale(1.02)'; this.style.boxShadow='0 15px 40px rgba(76, 175, 80, 0.2)'"
+                       onmouseout="this.style.transform='translateX(0) scale(1)'; this.style.boxShadow='0 4px 20px rgba(0,0,0,0.1)'">
+
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                            <div style="
+                                background: var(--gradient-primary);
+                                color: white;
+                                padding: 8px 15px;
+                                border-radius: 20px;
+                                font-size: 0.9rem;
+                                font-weight: 500;
+                            ">
+                                📅 {{ update.date }}
+                            </div>
+                            <div style="
+                                background: var(--accent-blue);
+                                color: white;
+                                padding: 5px 10px;
+                                border-radius: 15px;
+                                font-size: 0.8rem;
+                                animation: pulse 2s infinite;
+                            ">
+                                NEW
+                            </div>
+                        </div>
+
+                        <div style="
+                            font-size: 1.1rem;
+                            color: var(--dark-text);
+                            line-height: 1.6;
+                            font-weight: 500;
+                        ">
+                            🔹 {{ update.message }}
+                        </div>
+
+                        <!-- Decorative element -->
+                        <div style="
+                            position: absolute;
+                            top: -10px;
+                            right: -10px;
+                            width: 60px;
+                            height: 60px;
+                            background: linear-gradient(45deg, rgba(76, 175, 80, 0.1), rgba(33, 150, 243, 0.1));
+                            border-radius: 50%;
+                            animation: rotate 10s linear infinite;
+                        "></div>
+                    </div>
                 {% endfor %}
             {% else %}
-                <li style="padding: 10px;">No updates available at the moment.</li>
+                <div style="
+                    text-align: center;
+                    padding: 60px 20px;
+                    background: linear-gradient(135deg, #f8f9fa 0%, #e3f2fd 100%);
+                    border-radius: 20px;
+                    border: 2px dashed var(--primary-green);
+                ">
+                    <div style="font-size: 4rem; margin-bottom: 20px; animation: bounce 2s infinite;">📡</div>
+                    <h3 style="color: var(--primary-green); margin-bottom: 10px;">No Updates Available</h3>
+                    <p style="color: var(--light-text);">Check back later for the latest vaccination news and updates.</p>
+                </div>
             {% endif %}
-        </ul>
+        </div>
     </div>
 
-    <!-- API Status -->
-    <div style="background-color: #f5f5f5; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-        <h3 style="color:#93c572;">API Status</h3>
-        <p style="color: {% if api_error %}red{% else %}green{% endif %}; font-weight: bold;">
-            {% if api_error %}
-            ⚠️ Could not fetch live data: {{ api_error }}
-            {% else %}
-            ✅ Connected to vaccination data API
-            {% endif %}
-        </p>
+    <!-- API Status Section -->
+    <div class="stats-box" style="margin-bottom: 30px; animation: fadeInUp 1s ease-out 0.5s both;">
+        <h3>🔗 System Status</h3>
+
+        <div style="
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            background: {% if api_error %}linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%){% else %}linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%){% endif %};
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+        ">
+            <div style="
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                font-size: 1.2rem;
+                font-weight: 600;
+                color: {% if api_error %}#d32f2f{% else %}#2e7d32{% endif %};
+            ">
+                <div style="
+                    font-size: 2rem;
+                    animation: {% if api_error %}shake 1s infinite{% else %}pulse 2s infinite{% endif %};
+                ">
+                    {% if api_error %}⚠️{% else %}✅{% endif %}
+                </div>
+                <div>
+                    {% if api_error %}
+                        API Connection Error: {{ api_error }}
+                    {% else %}
+                        Connected to Vaccination Data API
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Status indicator -->
+            <div style="
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                width: 12px;
+                height: 12px;
+                background: {% if api_error %}#f44336{% else %}#4CAF50{% endif %};
+                border-radius: 50%;
+                animation: {% if api_error %}blink 1s infinite{% else %}pulse 2s infinite{% endif %};
+            "></div>
+        </div>
     </div>
 
-    <!-- Vaccine Reminders -->
-<div style="background-color: #f5f5f5; padding: 20px; border-radius: 8px;">
-    <h3 style="color:#93c572;">Upcoming Vaccine Reminders</h3>
-    {% if reminders %}
-        <ul style="padding-left: 20px; line-height: 1.6;">
-            {% for reminder in reminders %}
-                <li>💉 {{ reminder }}</li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p style="font-style: italic;">
-            No upcoming vaccine reminders at the moment.
-        </p>
-    {% endif %}
-</div>
+    <!-- Vaccine Reminders Section -->
+    <div class="stats-box" style="animation: fadeInUp 1s ease-out 0.7s both;">
+        <h3>⏰ Upcoming Vaccine Reminders</h3>
+
+        {% if reminders %}
+            <div style="display: grid; gap: 15px; margin-top: 20px;">
+                {% for reminder in reminders %}
+                    <div style="
+                        background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+                        padding: 20px;
+                        border-radius: 12px;
+                        border-left: 4px solid #FF9800;
+                        transition: all 0.3s ease;
+                        animation: slideInRight 0.6s ease-out {{ loop.index0 * 0.1 }}s both;
+                        position: relative;
+                    " onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 10px 25px rgba(255, 152, 0, 0.2)'"
+                       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <div style="
+                                font-size: 2rem;
+                                animation: float 3s ease-in-out infinite;
+                                animation-delay: {{ loop.index0 * 0.5 }}s;
+                            ">💉</div>
+                            <div style="
+                                flex: 1;
+                                font-size: 1rem;
+                                color: var(--dark-text);
+                                line-height: 1.5;
+                                font-weight: 500;
+                            ">
+                                {{ reminder }}
+                            </div>
+                            <div style="
+                                background: #FF9800;
+                                color: white;
+                                padding: 5px 12px;
+                                border-radius: 20px;
+                                font-size: 0.8rem;
+                                font-weight: 500;
+                            ">
+                                REMINDER
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div style="
+                text-align: center;
+                padding: 50px 20px;
+                background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+                border-radius: 15px;
+                border: 2px dashed #9C27B0;
+            ">
+                <div style="font-size: 3rem; margin-bottom: 15px; animation: bounce 2s infinite;">📅</div>
+                <h4 style="color: #9C27B0; margin-bottom: 10px;">All Caught Up!</h4>
+                <p style="color: var(--light-text); font-style: italic;">
+                    No upcoming vaccine reminders at the moment. Stay healthy! 🌟
+                </p>
+            </div>
+        {% endif %}
+    </div>
 
 </div>
+
+<!-- Additional CSS Animations -->
+<style>
+@keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(-50px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInRight {
+    from { opacity: 0; transform: translateX(50px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0.3; }
+}
+</style>
+
 {% endblock %}

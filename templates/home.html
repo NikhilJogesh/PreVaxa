@@ -4,141 +4,221 @@
 
 {% block content %}
 
-<div style="text-align: center;">
-    <img src="{{ url_for('static', filename='images/download.png') }}" 
-         alt="Vaccine Logo" 
-         style="width: 100px;">
+<!-- DNA Helix Animation -->
+<div class="dna-helix"></div>
+
+<!-- Logo Section -->
+<div class="logo-container">
+    <img src="{{ url_for('static', filename='images/download.png') }}"
+         alt="PreVaxa Vaccine Logo">
 </div>
 
+<!-- Main Title with Animation -->
+<h1>Vaccination Coverage Map</h1>
 
-<h1 style="color:#93c572; text-align:center;">Vaccination Coverage Map</h1>
-
-<!-- Map Container -->
-<div id="map" style="height: 500px; width: 100%; border: 2px solid #93c572; border-radius: 8px; margin: 20px auto;"></div>
+<!-- Map Container with Enhanced Styling -->
+<div id="map"></div>
 
 <!-- Leaflet CSS & JS for map -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<!-- Enhanced Map Script -->
 <script>
-// Initialize the map after page load
 document.addEventListener('DOMContentLoaded', () => {
-    const map = L.map('map').setView([22.9734, 78.6569], 5); // Center on India
+    // Show loading animation
+    const mapElement = document.getElementById('map');
+    mapElement.innerHTML = '<div style="display: flex; justify-content: center; align-items: center; height: 100%; background: #f8f9fa;"><div class="loading-spinner"></div><span style="margin-left: 15px; color: #4CAF50; font-weight: 500;">Loading vaccination data...</span></div>';
 
-    // Add OpenStreetMap tiles
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors'
-    }).addTo(map);
+    // Initialize map after a short delay for loading effect
+    setTimeout(() => {
+        const map = L.map('map').setView([22.9734, 78.6569], 5);
 
-    // Major Indian cities and vaccination centers
-   const cities = [
-        { name: "Delhi", lat: 28.6139, lon: 77.2090 },
-        { name: "Mumbai", lat: 19.0760, lon: 72.8777 },
-        { name: "Chennai", lat: 13.0827, lon: 80.2707 },
-        { name: "Kolkata", lat: 22.5726, lon: 88.3639 },
-        { name: "Bangalore", lat: 12.9716, lon: 77.5946 },
-        { name: "Hyderabad", lat: 17.3850, lon: 78.4867 },
-        { name: "Ahmedabad", lat: 23.0225, lon: 72.5714 },
-        { name: "Pune", lat: 18.5204, lon: 73.8567 },
-        { name: "Surat", lat: 21.1702, lon: 72.8311 },
-        { name: "Jaipur", lat: 26.9124, lon: 75.7873 },
-        { name: "Lucknow", lat: 26.8467, lon: 80.9462 },
-        { name: "Kanpur", lat: 26.4499, lon: 80.3319 },
-        { name: "Nagpur", lat: 21.1458, lon: 79.0882 },
-        { name: "Indore", lat: 22.7196, lon: 75.8577 },
-        { name: "Thane", lat: 19.2183, lon: 72.9781 },
-        { name: "Bhopal", lat: 23.2599, lon: 77.4126 },
-        { name: "Visakhapatnam", lat: 17.6868, lon: 83.2185 },
-        { name: "Patna", lat: 25.5941, lon: 85.1376 },
-        { name: "Vadodara", lat: 22.3072, lon: 73.1812 },
-        { name: "Ghaziabad", lat: 28.6692, lon: 77.4538 },
-        { name: "Ludhiana", lat: 30.9010, lon: 75.8573 },
-        { name: "Agra", lat: 27.1767, lon: 78.0081 },
-        { name: "Nashik", lat: 19.9975, lon: 73.7898 },
-        { name: "Faridabad", lat: 28.4089, lon: 77.3178 },
-        { name: "Meerut", lat: 28.9845, lon: 77.7064 },
-        { name: "Rajkot", lat: 22.3039, lon: 70.8022 },
-        { name: "Kalyan-Dombivli", lat: 19.2403, lon: 73.1305 },
-        { name: "Vasai-Virar", lat: 19.4912, lon: 72.8054 },
-        { name: "Varanasi", lat: 25.3176, lon: 82.9739 },
-        { name: "Srinagar", lat: 34.0837, lon: 74.7973 },
-        { name: "Aurangabad", lat: 19.8762, lon: 75.3433 },
-        { name: "Dhanbad", lat: 23.7957, lon: 86.4304 },
-        { name: "Amritsar", lat: 31.6340, lon: 74.8723 },
-        { name: "Navi Mumbai", lat: 19.0330, lon: 73.0297 },
-        { name: "Allahabad", lat: 25.4358, lon: 81.8463 },
-        { name: "Ranchi", lat: 23.3441, lon: 85.3096 },
-        { name: "Howrah", lat: 22.5958, lon: 88.2636 },
-        { name: "Coimbatore", lat: 11.0168, lon: 76.9558 },
-        { name: "Jabalpur", lat: 23.1815, lon: 79.9864 },
-        { name: "Gwalior", lat: 26.2183, lon: 78.1828 },
-        { name: "Vijayawada", lat: 16.5062, lon: 80.6480 },
-        { name: "Jodhpur", lat: 26.2389, lon: 73.0243 },
-        { name: "Madurai", lat: 9.9252, lon: 78.1198 },
-        { name: "Raipur", lat: 21.2514, lon: 81.6296 },
-        { name: "Kota", lat: 25.2138, lon: 75.8648 },
-        { name: "Chandigarh", lat: 30.7333, lon: 76.7794 },
-        { name: "Guwahati", lat: 26.1445, lon: 91.7362 },
-        { name: "Solapur", lat: 17.6599, lon: 75.9064 },
-        { name: "Hubli-Dharwad", lat: 15.3647, lon: 75.1240 },
-        { name: "Tiruchirappalli", lat: 10.7905, lon: 78.7047 },
-        { name: "Bareilly", lat: 28.3670, lon: 79.4304 },
-        { name: "Moradabad", lat: 28.8386, lon: 78.7733 },
-        { name: "Mysuru", lat: 12.2958, lon: 76.6394 },
-        { name: "Tiruppur", lat: 11.1085, lon: 77.3411 },
-        { name: "Gaya", lat: 24.7955, lon: 85.0060 },
-        { name: "Jalgaon", lat: 21.0077, lon: 75.5626 },
-        { name: "Udaipur", lat: 24.5854, lon: 73.7125 },
-        { name: "Bellary", lat: 15.1394, lon: 76.9214 },
-        { name: "Bhavnagar", lat: 21.7645, lon: 72.1519 },
-        { name: "Warangal", lat: 17.9784, lon: 79.5941 },
-        { name: "Shillong", lat: 25.5788, lon: 91.8933 },
-        { name: "Imphal", lat: 24.8170, lon: 93.9368 },
-        { name: "Aizawl", lat: 23.7271, lon: 92.7176 },
-        { name: "Gangtok", lat: 27.3389, lon: 88.6065 },
-        { name: "Itanagar", lat: 27.0844, lon: 93.6053 },
-        { name: "Port Blair", lat: 11.6234, lon: 92.7265 },
-        { name: "Panaji", lat: 15.4909, lon: 73.8278 }
-    ];
+        // Add OpenStreetMap tiles with custom styling
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: ' OpenStreetMap contributors'
+        }).addTo(map);
 
-    // Add markers with random vaccination percentage
-    cities.forEach(city => {
-        const vaccinatedPercent = Math.floor(Math.random() * 21) + 80; 
-        // Random between 80% and 100%
-        
-        L.marker([city.lat, city.lon])
-            .addTo(map)
-            .bindPopup(`
-                <b>${city.name}</b><br>
-                Vaccination center active<br>
-                ${vaccinatedPercent}% vaccinated
-            `);
-    });
+        // Enhanced cities data with vaccination centers
+        const cities = [
+            { name: "Delhi", lat: 28.6139, lon: 77.2090, centers: 245 },
+            { name: "Mumbai", lat: 19.0760, lon: 72.8777, centers: 198 },
+            { name: "Chennai", lat: 13.0827, lon: 80.2707, centers: 156 },
+            { name: "Kolkata", lat: 22.5726, lon: 88.3639, centers: 134 },
+            { name: "Bangalore", lat: 12.9716, lon: 77.5946, centers: 167 },
+            { name: "Hyderabad", lat: 17.3850, lon: 78.4867, centers: 143 },
+            { name: "Ahmedabad", lat: 23.0225, lon: 72.5714, centers: 112 },
+            { name: "Pune", lat: 18.5204, lon: 73.8567, centers: 98 },
+            { name: "Surat", lat: 21.1702, lon: 72.8311, centers: 87 },
+            { name: "Jaipur", lat: 26.9124, lon: 75.7873, centers: 76 },
+            { name: "Lucknow", lat: 26.8467, lon: 80.9462, centers: 89 },
+            { name: "Kanpur", lat: 26.4499, lon: 80.3319, centers: 65 },
+            { name: "Nagpur", lat: 21.1458, lon: 79.0882, centers: 72 },
+            { name: "Indore", lat: 22.7196, lon: 75.8577, centers: 68 },
+            { name: "Thane", lat: 19.2183, lon: 72.9781, centers: 54 },
+            { name: "Bhopal", lat: 23.2599, lon: 77.4126, centers: 58 },
+            { name: "Visakhapatnam", lat: 17.6868, lon: 83.2185, centers: 45 },
+            { name: "Patna", lat: 25.5941, lon: 85.1376, centers: 67 },
+            { name: "Vadodara", lat: 22.3072, lon: 73.1812, centers: 52 },
+            { name: "Ghaziabad", lat: 28.6692, lon: 77.4538, centers: 43 }
+        ];
+
+        // Add enhanced markers with custom icons and popups
+        cities.forEach((city, index) => {
+            const vaccinatedPercent = Math.floor(Math.random() * 21) + 80;
+            const statusColor = vaccinatedPercent >= 90 ? '#4CAF50' : vaccinatedPercent >= 85 ? '#FF9800' : '#F44336';
+
+            // Create custom marker with color coding
+            const customIcon = L.divIcon({
+                className: 'custom-marker',
+                html: `<div style="
+                    background: ${statusColor};
+                    width: 20px;
+                    height: 20px;
+                    border-radius: 50%;
+                    border: 3px solid white;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+                    animation: pulse 2s infinite;
+                "></div>`,
+                iconSize: [20, 20],
+                iconAnchor: [10, 10]
+            });
+
+            // Add marker with enhanced popup
+            setTimeout(() => {
+                L.marker([city.lat, city.lon], { icon: customIcon })
+                    .addTo(map)
+                    .bindPopup(`
+                        <div style="text-align: center; padding: 10px; min-width: 200px;">
+                            <h4 style="color: #4CAF50; margin: 0 0 10px 0; font-family: 'Poppins', sans-serif;">
+                                ${city.name}
+                            </h4>
+                            <div style="background: #f8f9fa; padding: 10px; border-radius: 8px; margin: 5px 0;">
+                                <strong style="color: ${statusColor};">${vaccinatedPercent}%</strong> Vaccinated
+                            </div>
+                            <div style="background: #e3f2fd; padding: 10px; border-radius: 8px; margin: 5px 0;">
+                                <strong>${city.centers}</strong> Active Centers
+                            </div>
+                            <div style="margin-top: 10px; font-size: 12px; color: #666;">
+                                Last updated: Today
+                            </div>
+                        </div>
+                    `);
+            }, index * 100); // Staggered animation
+        });
+
+        // Add map interaction effects
+        map.on('zoomstart', () => {
+            mapElement.style.filter = 'blur(2px)';
+        });
+
+        map.on('zoomend', () => {
+            mapElement.style.filter = 'none';
+        });
+
+    }, 1500); // Loading delay
 });
 </script>
 
+<!-- Enhanced Statistics Section -->
+<div class="stats-container">
+    <div class="stats-box">
+        <h3>National Vaccination Statistics</h3>
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-number" data-target="85">0</div>
+                <div class="stat-label">Fully Vaccinated</div>
+                <div style="font-size: 12px; color: #4CAF50; margin-top: 5px;">
+                    Target: 90%
+                </div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" data-target="92">0</div>
+                <div class="stat-label">At Least One Dose</div>
+                <div style="font-size: 12px; color: #2196F3; margin-top: 5px;">
+                    Growing Daily
+                </div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" data-target="7.3">0</div>
+                <div class="stat-label">Daily Doses (M)</div>
+                <div style="font-size: 12px; color: #FF9800; margin-top: 5px;">
+                    24/7 Operations
+                </div>
+            </div>
+        </div>
 
-<!-- Key stats section -->
-<div style="display: flex; justify-content: center; margin-top: 30px;">
-    <div style="background-color: #f5f5f5; padding: 20px; border-radius: 8px; max-width: 800px; width: 100%;">
-        <h3 style="color:#93c572;">Key Statistics</h3>
-        <div style="display: flex; justify-content: space-around; flex-wrap: wrap;">
-            <div style="text-align: center; margin: 10px; min-width: 150px;">
-                <div style="font-size: 24px; font-weight: bold; color: #93c572;">85%</div>
-                <div>Fully Vaccinated</div>
-            </div>
-            <div style="text-align: center; margin: 10px; min-width: 150px;">
-                <div style="font-size: 24px; font-weight: bold; color: #93c572;">92%</div>
-                <div>At Least One Dose</div>
-            </div>
-            <div style="text-align: center; margin: 10px; min-width: 150px;">
-                <div style="font-size: 24px; font-weight: bold; color: #93c572;">7.3M</div>
-                <div>Daily Doses</div>
+        <!-- Additional Info Section -->
+        <div style="margin-top: 30px; padding: 20px; background: linear-gradient(135deg, #e8f5e8 0%, #f0f8ff 100%); border-radius: 15px; text-align: center;">
+            <h4 style="color: #4CAF50; margin-bottom: 15px;">Vaccination Drive Progress</h4>
+            <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 15px;">
+                <div>
+                    <strong style="color: #2196F3;">2.1B+</strong><br>
+                    <small>Total Doses</small>
+                </div>
+                <div>
+                    <strong style="color: #4CAF50;">28K+</strong><br>
+                    <small>Centers Active</small>
+                </div>
+                <div>
+                    <strong style="color: #FF9800;">99.8%</strong><br>
+                    <small>Success Rate</small>
+                </div>
+                <div>
+                    <strong style="color: #9C27B0;">24/7</strong><br>
+                    <small>Monitoring</small>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Animated Counter Script -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Animated counter for statistics
+    const animateCounters = () => {
+        const counters = document.querySelectorAll('.stat-number[data-target]');
+
+        counters.forEach(counter => {
+            const target = parseFloat(counter.getAttribute('data-target'));
+            const increment = target / 100;
+            let current = 0;
+
+            const updateCounter = () => {
+                if (current < target) {
+                    current += increment;
+                    if (target >= 10) {
+                        counter.textContent = Math.floor(current) + '%';
+                    } else {
+                        counter.textContent = current.toFixed(1) + 'M';
+                    }
+                    setTimeout(updateCounter, 30);
+                } else {
+                    if (target >= 10) {
+                        counter.textContent = target + '%';
+                    } else {
+                        counter.textContent = target + 'M';
+                    }
+                }
+            };
+
+            // Start animation when element is visible
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        setTimeout(updateCounter, 500);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            });
+
+            observer.observe(counter);
+        });
+    };
+
+    animateCounters();
+});
+</script>
+
 {% endblock %}
-
-
-
-

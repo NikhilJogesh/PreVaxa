@@ -3,28 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}PreVaxa{% endblock %}</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>{% block title %}PreVaxa - Professional Vaccination Management{% endblock %}</title>
+
+    <!-- Enhanced Font Loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Custom Styles -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    <style>
-        * {
-            font-family: 'Montserrat', sans-serif;
-        }
-    </style>
+
+    <!-- Meta Tags for Better SEO -->
+    <meta name="description" content="PreVaxa - Professional vaccination management system with real-time tracking and analytics">
+    <meta name="keywords" content="vaccination, healthcare, covid-19, immunization, medical">
+    <meta name="author" content="Mommos and Microservices">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/download.png') }}">
 </head>
-<body style="background-color: #ffffff;">
-    <div class="navbar" style="background-color: #93c572; padding: 15px; text-align: right;">
-        <a href="/" style="margin: 0 15px; color: white; text-decoration: none;">Home</a>
-        <a href="/updates" style="margin: 0 15px; color: white; text-decoration: none;">Updates</a>
-        <a href="/charts" style="margin: 0 15px; color: white; text-decoration: none;">Charts</a>
-    </div>
+<body>
+    <!-- Enhanced Navigation -->
+    <nav class="navbar">
+        <div style="display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto;">
+            <div style="display: flex; align-items: center;">
+                <img src="{{ url_for('static', filename='images/download.png') }}"
+                     alt="PreVaxa Logo"
+                     style="width: 40px; height: 40px; border-radius: 50%; margin-right: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.2);">
+                <span style="font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 1.5rem; color: white;">
+                    PreVaxa
+                </span>
+            </div>
+            <div>
+                <a href="/" class="nav-link">
+                    <span style="margin-right: 8px;">🏠</span>Home
+                </a>
+                <a href="/updates" class="nav-link">
+                    <span style="margin-right: 8px;">📊</span>Updates
+                </a>
+                <a href="/charts" class="nav-link">
+                    <span style="margin-right: 8px;">📈</span>Charts
+                </a>
+            </div>
+        </div>
+    </nav>
 
-    <div class="content" style="padding-bottom: 60px;">
+    <!-- Main Content Area -->
+    <main class="content">
         {% block content %}{% endblock %}
-    </div>
+    </main>
 
-    <footer style="background-color: #93c572; color: white; padding: 20px; text-align: center; position: fixed; bottom: 0; width: 100%;">
-        Created by Mommos and Microservices with Love
+    <!-- Enhanced Footer -->
+    <footer>
+        <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+                <div style="text-align: left;">
+                    <div style="font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 1.2rem; margin-bottom: 5px;">
+                        PreVaxa
+                    </div>
+                    <div style="font-size: 0.9rem; opacity: 0.9;">
+                        Professional Vaccination Management
+                    </div>
+                </div>
+
+                <div style="text-align: center;">
+                    <div style="margin-bottom: 10px;">
+                        <span style="font-size: 1.5rem;">💉</span>
+                        <span style="font-size: 1.5rem;">🏥</span>
+                        <span style="font-size: 1.5rem;">🩺</span>
+                    </div>
+                    <div style="font-size: 0.9rem; opacity: 0.9;">
+                        Created with ❤️ by Mommos and Microservices
+                    </div>
+                </div>
+
+                <div style="text-align: right;">
+                    <div style="font-size: 0.9rem; opacity: 0.9; margin-bottom: 5px;">
+                        Protecting Communities
+                    </div>
+                    <div style="font-size: 0.8rem; opacity: 0.7;">
+                        &copy; 2025 PreVaxa. All rights reserved.
+                    </div>
+                </div>
+            </div>
+        </div>
     </footer>
+
+    <!-- Loading Animation Script -->
+    <script>
+        // Page loading animation
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add smooth scroll behavior
+            document.documentElement.style.scrollBehavior = 'smooth';
+
+            // Add entrance animation to main content
+            const content = document.querySelector('.content');
+            if (content) {
+                content.style.opacity = '0';
+                content.style.transform = 'translateY(20px)';
+
+                setTimeout(() => {
+                    content.style.transition = 'all 0.6s ease-out';
+                    content.style.opacity = '1';
+                    content.style.transform = 'translateY(0)';
+                }, 100);
+            }
+        });
+    </script>
 </body>
 </html>
